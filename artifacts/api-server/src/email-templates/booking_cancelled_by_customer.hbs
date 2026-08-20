@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klard</title>
+</head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background-color:#F5F2E8;-webkit-font-smoothing:antialiased;color:#1F2D44;">
+
+<div style="display:none;max-height:0;overflow:hidden;color:transparent;">Buchung storniert: {{serviceName}}</div>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F5F2E8;padding:24px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#FBFAF5;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.06);">
+
+        <tr>
+          <td style="background:linear-gradient(135deg,#0E1B2E 0%,#1F2D44 100%);padding:20px 32px;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tr>
+                <td>
+                  <span style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.5px;">klar<span style="color:#0E7490">d</span></span>
+                </td>
+                <td align="right" style="vertical-align:middle;">
+                  <span style="font-size:10px;color:#7ABFCF;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;">BUCHUNG · STORNIERT</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background:linear-gradient(90deg,#0E7490 0%,#D97706 50%,#F59E0B 100%);height:3px;line-height:3px;">&nbsp;</td>
+        </tr>
+
+        <tr>
+          <td style="padding:32px 32px 28px;">
+
+
+            <h1 style="font-family:Georgia,serif;font-size:26px;color:#0E1B2E;line-height:1.2;margin:0 0 16px;font-weight:700;letter-spacing:-0.5px;">Buchung storniert</h1>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Hallo {{recipientName}},</p>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">die folgende Buchung wurde durch den Kunden storniert:</p>
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#FBFAF5;border:1px solid #E2E8F0;border-radius:10px;margin:0 0 20px;">
+              <tr>
+                <td style="padding:20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Leistung</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{serviceName}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Ursprünglicher Termin</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{bookingDate}}, {{bookingTime}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Stornierungsgrund</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{cancellationReason}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Stornierungszeitpunkt</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{cancelledAt}}</td>
+            </tr>
+                    <tr>
+                      <td style="padding:10px 0;font-size:13px;color:#6B6657;">Buchungs-Nr.</td>
+                      <td style="padding:10px 0;font-size:13px;color:#0E1B2E;font-weight:600;font-family:'Courier New',monospace;">{bookingNumber}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#D1FAE5;border-left:3px solid #059669;border-radius:6px;margin:20px 0;">
+              <tr>
+                <td style="padding:14px 18px;">
+                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#059669;letter-spacing:1.2px;text-transform:uppercase;">Erstattung</p>
+                  <p style="margin:0;font-size:13px;color:#0E1B2E;line-height:1.5;">{{refundInfo}}</p>
+                </td>
+              </tr>
+            </table>
+
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Der Termin ist in Ihrem Kalender bereits entfernt (Sync max. 5 Min.).</p>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Beste Grüße,<br><strong>Ihr Klard-Team</strong></p>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#0E1B2E;color:#94A3B8;padding:24px 32px;font-size:11px;line-height:1.6;">
+            <p style="margin:0 0 8px;color:#7ABFCF;font-weight:600;">Klard — Doctolib-Modell für Berater</p>
+            <p style="margin:0 0 12px;">Klard GmbH · Kurfürstendamm 193E · 10707 Berlin</p>
+            <p style="margin:0 0 4px;">
+              <a href="https://klard.de" style="color:#7ABFCF;text-decoration:none;">klard.de</a>
+              &nbsp;·&nbsp;
+              <a href="mailto:hello@klard.de" style="color:#7ABFCF;text-decoration:none;">hello@klard.de</a>
+              &nbsp;·&nbsp;
+              <a href="https://klard.de/datenschutz" style="color:#7ABFCF;text-decoration:none;">Datenschutz</a>
+            </p>
+            <p style="margin:12px 0 0;color:#475569;font-size:10px;">
+              Sie erhalten diese E-Mail, weil Sie ein Klard-Profil haben oder eine Buchung getätigt haben.
+              <a href="https://klard.de/email-settings" style="color:#7ABFCF;">E-Mail-Einstellungen verwalten</a>.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+      <p style="margin:16px 0 0;font-size:11px;color:#8B8676;">
+        Diese E-Mail wurde automatisch generiert.
+      </p>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
