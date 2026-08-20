@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /konto
+Disallow: /verwaltung
+Disallow: /kunden
+Disallow: /portfolio
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /report
+
+Sitemap: https://foerderschiene.de/sitemap.xml
