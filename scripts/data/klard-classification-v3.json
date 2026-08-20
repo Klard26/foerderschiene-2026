@@ -1,0 +1,1058 @@
+{
+  "$schema": "https://klard.de/schemas/classification/v3",
+  "version": "3.0.0",
+  "generated_at": "2026-06-25",
+  "description": "Klard Anbieter-Klassifikation v3.0 — 2 Welten, 13 Bereiche, 78 Berufsgruppen. Erweitert die bestehende v2-Branchen-Liste um Welt 02 (Alltag & Handwerk, Lead-Modell).",
+  "pricing_models": {
+    "now": {
+      "label": "Sofortbuchung",
+      "desc": "Fester Preis, Live-Kalender, sofortige Buchung wie bei Doctolib."
+    },
+    "lead": {
+      "label": "Pay-per-Lead",
+      "desc": "Kunde stellt Anfrage, Anbieter kauft qualifizierte Leads."
+    },
+    "hybrid": {
+      "label": "Hybrid",
+      "desc": "Beide Modelle möglich — standardisierte Leistungen als Festpreis, komplexe als Lead."
+    }
+  },
+  "worlds": [
+    {
+      "id": "pro",
+      "title": "Beratung",
+      "description": "Professionelle Dienstleistungen mit Kammer-Pflicht, HOAI-Honorierung oder dena-Listung. Premium-Preise, terminbasierte Buchung, geringere Frequenz.",
+      "default_pricing_model": "now",
+      "areas": [
+        {
+          "id": "pro_bau",
+          "code": "bau",
+          "num": "01",
+          "name": "Bau- & Energieberatung",
+          "description": "Die 8 Berufsgruppen aus dem Leistungskatalog v2 — alle mit dena-Listung, HOAI oder Kammer-Pflicht.",
+          "professions": [
+            {
+              "id": "pro_bau_enb",
+              "code": "ENB",
+              "name": "Energieberatung",
+              "example_services": "BAFA EBW, iSFP, BEG WG/EM, KfW KFN",
+              "requirements": [
+                "dena"
+              ],
+              "indicative_price": 1700,
+              "price_unit": "objekt",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_bau_arc",
+              "code": "ARC",
+              "name": "Architektur",
+              "example_services": "Planung, Bauantrag, HOAI LPH 1–9",
+              "requirements": [
+                "Kammer"
+              ],
+              "indicative_price": 12000,
+              "price_unit": "lph",
+              "pricing_model": "hybrid"
+            },
+            {
+              "id": "pro_bau_sta",
+              "code": "STA",
+              "name": "Statiker / Tragwerksplaner",
+              "example_services": "Standsicherheit, Bewehrung, Sanierung",
+              "requirements": [
+                "Ing.-Kammer"
+              ],
+              "indicative_price": 3500,
+              "price_unit": "objekt",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_bau_bau",
+              "code": "BAU",
+              "name": "Bauberatung",
+              "example_services": "Bauleitung, Abnahme, LV-Prüfung",
+              "requirements": [],
+              "indicative_price": 5500,
+              "price_unit": "objekt",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_bau_sac",
+              "code": "SAC",
+              "name": "Sachverständige",
+              "example_services": "Gutachten, Bewertung, Schäden",
+              "requirements": [
+                "ö.b.u.v."
+              ],
+              "indicative_price": 1490,
+              "price_unit": "objekt",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_bau_vrm",
+              "code": "VRM",
+              "name": "Vermesser / Geodäten",
+              "example_services": "Grenzfeststellung, Lageplan, ÖbVI",
+              "requirements": [
+                "ÖbVI"
+              ],
+              "indicative_price": 1690,
+              "price_unit": "objekt",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_bau_tga",
+              "code": "TGA",
+              "name": "TGA-Fachplaner",
+              "example_services": "Heizung, Lüftung, Sanitär, Elektro",
+              "requirements": [
+                "Ing.-Kammer"
+              ],
+              "indicative_price": 1490,
+              "price_unit": "objekt",
+              "pricing_model": "hybrid"
+            },
+            {
+              "id": "pro_bau_bps",
+              "code": "BPS",
+              "name": "Bauphysik & Spezial",
+              "example_services": "Schallschutz, Brandschutz, Schadstoffe",
+              "requirements": [
+                "Ing.-Kammer"
+              ],
+              "indicative_price": 1690,
+              "price_unit": "objekt",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "pro_fin",
+          "code": "fin",
+          "num": "02",
+          "name": "Finanzen, Recht & Steuern",
+          "description": "Reglementierte Beratungsberufe mit Standeskammern. Pflichtmitgliedschaft erforderlich, Standesgebühren teilweise vorgeschrieben.",
+          "professions": [
+            {
+              "id": "pro_fin_stb",
+              "code": "STB",
+              "name": "Steuerberatung",
+              "example_services": "Steuererklärung, Bilanz, Beratung",
+              "requirements": [
+                "StB-Kammer"
+              ],
+              "indicative_price": 120,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_fin_rab",
+              "code": "RAB",
+              "name": "Rechtsberatung / Anwälte",
+              "example_services": "Erstberatung, Vertretung, Vertrag",
+              "requirements": [
+                "RAK"
+              ],
+              "indicative_price": 240,
+              "price_unit": "stunde",
+              "pricing_model": "hybrid"
+            },
+            {
+              "id": "pro_fin_wpr",
+              "code": "WPR",
+              "name": "Wirtschaftsprüfung",
+              "example_services": "Jahresabschluss, Prüfung, Due Diligence",
+              "requirements": [
+                "WPK"
+              ],
+              "indicative_price": 180,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_fin_fin",
+              "code": "FIN",
+              "name": "Finanzberatung",
+              "example_services": "Geldanlage, Altersvorsorge, Bonität",
+              "requirements": [
+                "§34f GewO"
+              ],
+              "indicative_price": 150,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_fin_vrs",
+              "code": "VRS",
+              "name": "Versicherungsberatung",
+              "example_services": "Bedarfsanalyse, Honorarberatung",
+              "requirements": [
+                "§34d GewO"
+              ],
+              "indicative_price": 180,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            },
+            {
+              "id": "pro_fin_not",
+              "code": "NOT",
+              "name": "Notariat",
+              "example_services": "Beurkundung, Erbrecht, Grundbuch",
+              "requirements": [
+                "Notarkammer"
+              ],
+              "indicative_price": null,
+              "price_unit": "gnotkg",
+              "pricing_model": "now"
+            }
+          ]
+        },
+        {
+          "id": "pro_imm",
+          "code": "imm",
+          "num": "04",
+          "name": "Immobilien",
+          "description": "Vermittlung, Verwaltung und Bewertung. Teilweise §34c GewO-pflichtig, je nach Geschäftsfeld.",
+          "professions": [
+            {
+              "id": "pro_imm_mak",
+              "code": "MAK",
+              "name": "Immobilienmakler",
+              "example_services": "Vermarktung, Verkauf, Vermietung",
+              "requirements": [
+                "§34c GewO"
+              ],
+              "indicative_price": null,
+              "price_unit": "provision",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_imm_vwa",
+              "code": "VWA",
+              "name": "Hausverwaltung (WEG/SEV)",
+              "example_services": "WEG-Verwaltung, Mietverwaltung, Sondereig.",
+              "requirements": [
+                "§34c GewO"
+              ],
+              "indicative_price": 28,
+              "price_unit": "we_monat",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_imm_imb",
+              "code": "IMB",
+              "name": "Immobilienbewertung",
+              "example_services": "Verkehrswert, Ertragswert, BelWertV",
+              "requirements": [
+                "Sachverst."
+              ],
+              "indicative_price": 1900,
+              "price_unit": "objekt",
+              "pricing_model": "now"
+            }
+          ]
+        },
+        {
+          "id": "pro_biz",
+          "code": "biz",
+          "num": "05",
+          "name": "Unternehmen & Strategie",
+          "description": "B2B-Beratung ohne Kammerpflicht. Schwerpunkt: Skalierung, Digitalisierung, Personalisierung.",
+          "professions": [
+            {
+              "id": "pro_biz_ube",
+              "code": "UBE",
+              "name": "Unternehmensberatung",
+              "example_services": "Strategie, Restrukturierung, M&A",
+              "requirements": [],
+              "indicative_price": 180,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_biz_mkt",
+              "code": "MKT",
+              "name": "Marketingberatung",
+              "example_services": "SEO, Social, Brand, Performance",
+              "requirements": [],
+              "indicative_price": 120,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_biz_itb",
+              "code": "ITB",
+              "name": "IT & Digitalisierung",
+              "example_services": "ERP, Cloud, Cybersecurity, KI-Einsatz",
+              "requirements": [],
+              "indicative_price": 150,
+              "price_unit": "stunde",
+              "pricing_model": "hybrid"
+            },
+            {
+              "id": "pro_biz_per",
+              "code": "PER",
+              "name": "Personalberatung",
+              "example_services": "Recruiting, Executive Search, HR-Strategie",
+              "requirements": [
+                "AÜG bei Verleih"
+              ],
+              "indicative_price": null,
+              "price_unit": "jahresgehalt",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "pro_biz_coa",
+              "code": "COA",
+              "name": "Coaching",
+              "example_services": "Führung, Karriere, Business-Mentoring",
+              "requirements": [],
+              "indicative_price": 180,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alltag",
+      "title": "Alltag & Handwerk",
+      "description": "Lokale Dienstleistungen für Privatkunden und Kleinbetriebe nach dem Lead-Modell. Anbieter zahlen pro qualifizierter Anfrage, kein Provisionsmodell.",
+      "default_pricing_model": "lead",
+      "areas": [
+        {
+          "id": "alltag_haus",
+          "code": "haus",
+          "num": "01",
+          "name": "Haushalt & Reinigung",
+          "description": "Wiederkehrende Dienstleistungen für Privathaushalte. §35a EStG-fähig.",
+          "professions": [
+            {
+              "id": "alltag_haus_put",
+              "code": "PUT",
+              "name": "Putzkraft / Reinigungskraft",
+              "example_services": "Wohnungsreinigung, Büroreinigung, Treppenhaus",
+              "requirements": [
+                "§35a"
+              ],
+              "indicative_price": 18,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_frg",
+              "code": "FRG",
+              "name": "Fensterreinigung",
+              "example_services": "Fenster außen, Wintergarten, Glasfassaden",
+              "requirements": [],
+              "indicative_price": 4,
+              "price_unit": "qm",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_tep",
+              "code": "TEP",
+              "name": "Teppich- & Polsterreinigung",
+              "example_services": "Sprühextraktion, Stuhl/Sofa, Matratze",
+              "requirements": [],
+              "indicative_price": 10,
+              "price_unit": "qm",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_bue",
+              "code": "BUE",
+              "name": "Bügelservice",
+              "example_services": "Hemden, Bettwäsche, Tischwäsche, Abhol-Service",
+              "requirements": [],
+              "indicative_price": 2.5,
+              "price_unit": "stueck",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_wsc",
+              "code": "WSC",
+              "name": "Wäscheservice",
+              "example_services": "Wäsche waschen, trocknen, Lieferung",
+              "requirements": [],
+              "indicative_price": 8,
+              "price_unit": "kg",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_ent",
+              "code": "ENT",
+              "name": "Entrümpelung & Wohnungsauflösung",
+              "example_services": "Haushaltsauflösung, Sperrmüll, Nachlass",
+              "requirements": [
+                "§34h"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_haus_umz",
+              "code": "UMZ",
+              "name": "Umzugshelfer & Möbeltransport",
+              "example_services": "Vollservice-Umzug, Klaviertransport, Lagerung",
+              "requirements": [
+                "Güterkraft. ab 3,5t"
+              ],
+              "indicative_price": 35,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_garten",
+          "code": "garten",
+          "num": "02",
+          "name": "Garten & Außenanlagen",
+          "description": "Saisonale Dienstleistungen rund ums Haus. §35a EStG-fähig.",
+          "professions": [
+            {
+              "id": "alltag_garten_gar",
+              "code": "GAR",
+              "name": "Gartenpflege",
+              "example_services": "Rasen mähen, Hecke schneiden, Unkraut",
+              "requirements": [],
+              "indicative_price": 28,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_lan",
+              "code": "LAN",
+              "name": "Landschaftsbau & Gartengestaltung",
+              "example_services": "Planung, Bepflanzung, Wege, Teich",
+              "requirements": [
+                "Meister"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_bpf",
+              "code": "BPF",
+              "name": "Baumpflege & Baumfällung",
+              "example_services": "Kronen-Schnitt, Fällung, Wurzelentfernung",
+              "requirements": [
+                "SKT-Schein"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_ras",
+              "code": "RAS",
+              "name": "Rasen verlegen / Vertikutieren",
+              "example_services": "Rollrasen, Aussaat, Vertikutieren, Düngen",
+              "requirements": [],
+              "indicative_price": 12,
+              "price_unit": "qm",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_win",
+              "code": "WIN",
+              "name": "Winterdienst",
+              "example_services": "Schneeräumung, Streuen, Glättebekämpfung",
+              "requirements": [
+                "Verkehrssich."
+              ],
+              "indicative_price": 35,
+              "price_unit": "einsatz",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_scb",
+              "code": "SCB",
+              "name": "Schädlingsbekämpfung",
+              "example_services": "Wespen, Marder, Mäuse, Tauben, Bettwanzen",
+              "requirements": [
+                "IHK-Sachk."
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_garten_poo",
+              "code": "POO",
+              "name": "Pool- & Teichpflege",
+              "example_services": "Reinigung, Wasserwerte, Winterfest machen",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_hw",
+          "code": "hw",
+          "num": "03",
+          "name": "Handwerk (Reparatur & Kleinarbeiten)",
+          "description": "Klassische Handwerksleistungen für Privatkunden. Eintragung in Handwerksrolle teilweise erforderlich.",
+          "professions": [
+            {
+              "id": "alltag_hw_mal",
+              "code": "MAL",
+              "name": "Maler & Lackierer",
+              "example_services": "Innenanstrich, Tapezieren, Fassade",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_mau",
+              "code": "MAU",
+              "name": "Maurer & Putzer",
+              "example_services": "Wanddurchbruch, Verputzen, Fliesenleger",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_elk",
+              "code": "ELK",
+              "name": "Elektriker",
+              "example_services": "Steckdose, Sicherung, E-Check, Lampen",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": 85,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_san",
+              "code": "SAN",
+              "name": "Sanitär / Heizung",
+              "example_services": "Heizung warten, Wasserhahn, Toilette, Bad",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": 85,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_tis",
+              "code": "TIS",
+              "name": "Tischler & Schreiner",
+              "example_services": "Möbel, Türen, Fenster, Einbauten",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_dac",
+              "code": "DAC",
+              "name": "Dachdecker",
+              "example_services": "Reparatur, Neueindeckung, Dachfenster",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_sld",
+              "code": "SLD",
+              "name": "Schlüsseldienst",
+              "example_services": "Türöffnung, Schloss, Sicherheitstechnik",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_glr",
+              "code": "GLR",
+              "name": "Glaser & Rolladen",
+              "example_services": "Glasbruch, Rolladen, Jalousien, Markisen",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_hw_bod",
+              "code": "BOD",
+              "name": "Bodenleger",
+              "example_services": "Parkett, Laminat, PVC, Teppich, Schleifen",
+              "requirements": [
+                "HWO B"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_mode",
+          "code": "mode",
+          "num": "04",
+          "name": "Mode, Schneiderei & Reparatur",
+          "description": "Kleinbetriebe für Änderungen, Maßanfertigungen und Reparaturen.",
+          "professions": [
+            {
+              "id": "alltag_mode_aen",
+              "code": "AEN",
+              "name": "Änderungsschneiderei",
+              "example_services": "Hose kürzen, Reißverschluss, Weiten/Engern",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_mode_msc",
+              "code": "MSC",
+              "name": "Maßschneiderei",
+              "example_services": "Maßanzüge, Brautkleid, Kleider, Hemden",
+              "requirements": [
+                "HWO B"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_mode_shm",
+              "code": "SHM",
+              "name": "Schuhmacher & Schuhreparatur",
+              "example_services": "Absätze, Sohlen, Reißverschluss, Lederpflege",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_mode_pol",
+              "code": "POL",
+              "name": "Polsterer",
+              "example_services": "Sofa neu beziehen, Stuhl, Auto-Sitze",
+              "requirements": [
+                "HWO B"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_mode_led",
+              "code": "LED",
+              "name": "Lederreparatur",
+              "example_services": "Jacke, Tasche, Auto-Innenraum, Reinigung",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_beauty",
+          "code": "beauty",
+          "num": "05",
+          "name": "Beauty, Wellness & Gesundheit",
+          "description": "Mobile Dienstleistungen und stationäre Angebote. Gewerbe-Erlaubnis und teilweise Sachkundenachweis nötig.",
+          "professions": [
+            {
+              "id": "alltag_beauty_frs",
+              "code": "FRS",
+              "name": "Friseur (mobil & Salon)",
+              "example_services": "Schnitt, Färbung, Hochzeitsfrisur, Bart",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_beauty_kos",
+              "code": "KOS",
+              "name": "Kosmetik",
+              "example_services": "Gesichtsbehandlung, Permanent-Make-up",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": 65,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_beauty_nag",
+              "code": "NAG",
+              "name": "Nagelstudio",
+              "example_services": "Maniküre, Pediküre, Gel, Acryl",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_beauty_msg",
+              "code": "MSG",
+              "name": "Massage & Physiotherapie",
+              "example_services": "Wellness, medizinische Massage, Sport",
+              "requirements": [
+                "Heilpraktiker / PT"
+              ],
+              "indicative_price": 65,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_beauty_ost",
+              "code": "OST",
+              "name": "Osteopathie",
+              "example_services": "Erstanamnese, Behandlung, Kinder-Osteo.",
+              "requirements": [
+                "Heilkundeberecht."
+              ],
+              "indicative_price": 95,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            },
+            {
+              "id": "alltag_beauty_ern",
+              "code": "ERN",
+              "name": "Ernährungsberatung",
+              "example_services": "Abnehmen, Sportler, Allergien, Diabetiker",
+              "requirements": [
+                "Ökotrophologe"
+              ],
+              "indicative_price": 80,
+              "price_unit": "stunde",
+              "pricing_model": "now"
+            }
+          ]
+        },
+        {
+          "id": "alltag_tier",
+          "code": "tier",
+          "num": "06",
+          "name": "Tier & Betreuung",
+          "description": "Wachsender Markt mit hoher emotionaler Bindung. Pay-per-Lead besonders effektiv.",
+          "professions": [
+            {
+              "id": "alltag_tier_tsi",
+              "code": "TSI",
+              "name": "Tiersitter / Hundesitter",
+              "example_services": "Stunden- oder Tagesbetreuung, Urlaub",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": 20,
+              "price_unit": "tag",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_tier_gas",
+              "code": "GAS",
+              "name": "Gassi-Service",
+              "example_services": "Tägliches Gassi-Gehen, Mehrhunde-Service",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": 15,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_tier_hus",
+              "code": "HUS",
+              "name": "Hundeschule & Hundetrainer",
+              "example_services": "Welpenkurs, Einzelcoaching, Problemfälle",
+              "requirements": [
+                "§11 TierSchG"
+              ],
+              "indicative_price": 70,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_tier_gro",
+              "code": "GRO",
+              "name": "Hunde-Grooming / Salon",
+              "example_services": "Waschen, Schneiden, Scheren, Pflege",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_tier_kat",
+              "code": "KAT",
+              "name": "Katzenbetreuung zu Hause",
+              "example_services": "Füttern, Spielen, Streu wechseln (Urlaub)",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": 15,
+              "price_unit": "besuch",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_fam",
+          "code": "fam",
+          "num": "07",
+          "name": "Kinder & Familie",
+          "description": "Hochsensibler Bereich mit Schutzbedarf — erweitertes Führungszeugnis als Pflicht-Upload bei der Registrierung.",
+          "professions": [
+            {
+              "id": "alltag_fam_bab",
+              "code": "BAB",
+              "name": "Babysitter",
+              "example_services": "Stundenweise, abends, Wochenende",
+              "requirements": [
+                "EFZ Pflicht"
+              ],
+              "indicative_price": 12,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_fam_tag",
+              "code": "TAG",
+              "name": "Tagesmutter / Tagespflege",
+              "example_services": "Ganztags, Halbtags, Kindbetreuung U3",
+              "requirements": [
+                "Pflegeerl."
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_fam_nah",
+              "code": "NAH",
+              "name": "Nachhilfe / Lernförderung",
+              "example_services": "Mathematik, Englisch, Deutsch, Abitur",
+              "requirements": [],
+              "indicative_price": 25,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_fam_mus",
+              "code": "MUS",
+              "name": "Musikunterricht",
+              "example_services": "Klavier, Gitarre, Geige, Gesang",
+              "requirements": [],
+              "indicative_price": 40,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_fam_geb",
+              "code": "GEB",
+              "name": "Hebamme / Doula",
+              "example_services": "Schwangerschaftsbegleitung, Nachsorge",
+              "requirements": [
+                "Hebammen-Erl."
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "now"
+            }
+          ]
+        },
+        {
+          "id": "alltag_evt",
+          "code": "evt",
+          "num": "08",
+          "name": "Foto, Event & Catering",
+          "description": "Hochzeit, Feier, Firmenevent. Sehr hohe Customer-Lifetime-Value bei Erstkontakten.",
+          "professions": [
+            {
+              "id": "alltag_evt_fot",
+              "code": "FOT",
+              "name": "Fotograf",
+              "example_services": "Hochzeit, Familie, Business, Porträt",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_vid",
+              "code": "VID",
+              "name": "Videograf & Filmproduktion",
+              "example_services": "Hochzeitsfilm, Imagefilm, Event-Recap",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_djd",
+              "code": "DJD",
+              "name": "DJ & Live-Musik",
+              "example_services": "Hochzeit, Geburtstag, Firmenfeier",
+              "requirements": [
+                "GEMA"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_cat",
+              "code": "CAT",
+              "name": "Catering & Partyservice",
+              "example_services": "Buffet, Fingerfood, Hochzeit, Firmenevent",
+              "requirements": [
+                "Lebensmittel-Hyg."
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_evt",
+              "code": "EVT",
+              "name": "Eventplanung & Hochzeitsplaner",
+              "example_services": "Komplettplanung, Day-of-Coordination",
+              "requirements": [
+                "Gewerbe"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_dec",
+              "code": "DEC",
+              "name": "Dekoration & Floristik",
+              "example_services": "Hochzeitsdeko, Blumen, Tafel, Räume",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_evt_mod",
+              "code": "MOD",
+              "name": "Moderator / Trauredner",
+              "example_services": "Freie Trauung, Hochzeit, Firmenfeier",
+              "requirements": [],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            }
+          ]
+        },
+        {
+          "id": "alltag_sen",
+          "code": "sen",
+          "num": "09",
+          "name": "Senioren & Alltagshilfe",
+          "description": "Demografisch wachsender Markt. §45a SGB XI-Entlastungsbetrag (131 € / Monat) erstattbar.",
+          "professions": [
+            {
+              "id": "alltag_sen_alt",
+              "code": "ALT",
+              "name": "Alltagshilfe & Haushaltshilfe Senioren",
+              "example_services": "Einkauf, Kochen, Begleitung, Putzen",
+              "requirements": [
+                "§45a-Anerk."
+              ],
+              "indicative_price": 30,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_sen_bet",
+              "code": "BET",
+              "name": "Betreuung & Gesellschaft",
+              "example_services": "Spaziergänge, Vorlesen, Demenz-Begleitung",
+              "requirements": [
+                "§45a-Anerk."
+              ],
+              "indicative_price": 28,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_sen_fah",
+              "code": "FAH",
+              "name": "Fahrdienst Senioren / Begleitung",
+              "example_services": "Arzt-Fahrten, Behörden, Begleitung",
+              "requirements": [
+                "P-Schein"
+              ],
+              "indicative_price": 35,
+              "price_unit": "stunde",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_sen_pfa",
+              "code": "PFA",
+              "name": "24-Stunden-Pflege-Vermittlung",
+              "example_services": "Vermittlung Pflegekraft (osteurop.)",
+              "requirements": [
+                "§34c (Vermittl.)"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            },
+            {
+              "id": "alltag_sen_bar",
+              "code": "BAR",
+              "name": "Barriere-Umbau",
+              "example_services": "Treppenlift, Wannentür, Haltegriffe",
+              "requirements": [
+                "HWO A"
+              ],
+              "indicative_price": null,
+              "price_unit": "pauschal",
+              "pricing_model": "lead"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "worlds": 2,
+    "areas": 13,
+    "professions": 78
+  }
+}
