@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klard</title>
+</head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background-color:#F5F2E8;-webkit-font-smoothing:antialiased;color:#1F2D44;">
+
+<div style="display:none;max-height:0;overflow:hidden;color:transparent;">Ihre Buchung bei {{providerName}} wurde bestätigt</div>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F5F2E8;padding:24px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#FBFAF5;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.06);">
+
+        <tr>
+          <td style="background:linear-gradient(135deg,#0E1B2E 0%,#1F2D44 100%);padding:20px 32px;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tr>
+                <td>
+                  <span style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.5px;">klar<span style="color:#0E7490">d</span></span>
+                </td>
+                <td align="right" style="vertical-align:middle;">
+                  <span style="font-size:10px;color:#7ABFCF;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;">BUCHUNG · BESTÄTIGT</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background:linear-gradient(90deg,#0E7490 0%,#D97706 50%,#F59E0B 100%);height:3px;line-height:3px;">&nbsp;</td>
+        </tr>
+
+        <tr>
+          <td style="padding:32px 32px 28px;">
+
+
+            <h1 style="font-family:Georgia,serif;font-size:26px;color:#0E1B2E;line-height:1.2;margin:0 0 16px;font-weight:700;letter-spacing:-0.5px;">✓ Buchung bestätigt</h1>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Hallo {{customerName}},</p>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">{{confirmIntro}}</p>
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#FBFAF5;border:1px solid #E2E8F0;border-radius:10px;margin:0 0 20px;">
+              <tr>
+                <td style="padding:20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Leistung</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{serviceName}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Anbieter</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{providerName}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Datum & Uhrzeit</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{bookingDate}}, {{bookingTime}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Dauer</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{bookingDuration}}</td>
+            </tr>
+                    
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Ort</td>
+              <td style="padding:10px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#0E1B2E;font-weight:600;vertical-align:top;">{{bookingLocation}}</td>
+            </tr>
+                    <tr>
+                      <td style="padding:10px 0;font-size:13px;color:#6B6657;width:40%;vertical-align:top;">Buchungs-Nr.</td>
+                      <td style="padding:10px 0;font-size:13px;color:#0E1B2E;font-weight:600;vertical-align:top;font-family:'Courier New',monospace;">{bookingNumber}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#F0FDFF;border-radius:10px;padding:14px 18px;margin:0 0 20px;">
+              <tr>
+                <td style="font-size:13px;color:#0E1B2E;">
+                  <p style="margin:0 0 4px;font-weight:700;color:#0E7490;">💰 {{amountLabel}}: <span style="font-size:18px;font-family:Georgia,serif;">{totalAmount}</span></p>
+                  <p style="margin:0;font-size:12px;color:#6B6657;">{{amountNote}}</p>
+                </td>
+              </tr>
+            </table>
+
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:24px 0;">
+              <tr>
+                <td style="background-color:#0E7490;border-radius:8px;">
+                  <a href="{{bookingUrl}}" style="display:inline-block;padding:14px 32px;color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:700;text-decoration:none;">Buchung verwalten →</a>
+                </td>
+              </tr>
+            </table>
+
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F0FDFF;border-left:3px solid #0E7490;border-radius:6px;margin:20px 0;">
+              <tr>
+                <td style="padding:14px 18px;">
+                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#0E7490;letter-spacing:1.2px;text-transform:uppercase;">Kalender-Eintrag herunterladen</p>
+                  <p style="margin:0;font-size:13px;color:#0E1B2E;line-height:1.5;">Speichern Sie den Termin direkt in Ihrem Kalender: <a href='{{icsUrl}}' style='color:#0E7490;text-decoration:underline;'>klard-termin.ics herunterladen</a></p>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size:14px;color:#0E1B2E;font-weight:600;margin:24px 0 12px;">Was passiert jetzt?</p>
+            <ul style="padding-left:20px;margin:0 0 16px;">
+              <li style="font-size:13px;color:#1F2D44;margin-bottom:6px;line-height:1.5;">Wir senden Ihnen <strong>24 Stunden vorher</strong> eine Erinnerung</li>
+              <li style="font-size:13px;color:#1F2D44;margin-bottom:6px;line-height:1.5;">Bei Fragen kontaktieren Sie {providerName} direkt: <a href='mailto:{providerEmail}' style='color:#0E7490;text-decoration:underline;'>{providerEmail}</a></li>
+              <li style="font-size:13px;color:#1F2D44;line-height:1.5;">Bei kurzfristigen Änderungen <a href='{bookingUrl}' style='color:#0E7490;text-decoration:underline;'>verwalten Sie Ihre Buchung online</a></li>
+            </ul>
+
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Beste Grüße,<br><strong>Ihr Klard-Team</strong></p>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#0E1B2E;color:#94A3B8;padding:24px 32px;font-size:11px;line-height:1.6;">
+            <p style="margin:0 0 8px;color:#7ABFCF;font-weight:600;">Klard — Doctolib-Modell für Berater</p>
+            <p style="margin:0 0 12px;">Klard GmbH · Kurfürstendamm 193E · 10707 Berlin</p>
+            <p style="margin:0 0 4px;">
+              <a href="https://klard.de" style="color:#7ABFCF;text-decoration:none;">klard.de</a>
+              &nbsp;·&nbsp;
+              <a href="mailto:hello@klard.de" style="color:#7ABFCF;text-decoration:none;">hello@klard.de</a>
+              &nbsp;·&nbsp;
+              <a href="https://klard.de/datenschutz" style="color:#7ABFCF;text-decoration:none;">Datenschutz</a>
+            </p>
+            <p style="margin:12px 0 0;color:#475569;font-size:10px;">
+              Sie erhalten diese E-Mail, weil Sie ein Klard-Profil haben oder eine Buchung getätigt haben.
+              <a href="https://klard.de/email-settings" style="color:#7ABFCF;">E-Mail-Einstellungen verwalten</a>.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+      <p style="margin:16px 0 0;font-size:11px;color:#8B8676;">
+        Diese E-Mail wurde automatisch generiert.
+      </p>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
