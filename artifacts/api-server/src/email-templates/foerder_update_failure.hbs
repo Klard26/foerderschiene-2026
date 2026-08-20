@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de">
+  <body style="margin:0;padding:24px;background:#f7f7f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#0e1b2e;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;width:100%;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;">
+            <tr>
+              <td style="height:4px;background:#dc2626;border-radius:12px 12px 0 0;font-size:4px;line-height:4px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="padding:32px;">
+                <h1 style="margin:0 0 16px;font-size:24px;line-height:1.25;">Katalog-Aktualisierung braucht Aufmerksamkeit</h1>
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">Die Quelle <strong>{{source}}</strong> konnte nach {{failureCount}} nicht aktualisiert werden.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;">
+                  <tr>
+                    <td style="padding:16px;font-size:13px;line-height:1.5;color:#7f1d1d;">
+                      <strong>Letzter Fehler</strong><br />
+                      {{lastError}}
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0 0 24px;font-size:15px;line-height:1.6;">Bitte prüfen Sie die Quelle und den Verlauf im Bereich „Katalog-Updates“.</p>
+                <a href="{{adminUrl}}" style="display:inline-block;padding:12px 18px;background:#0e7490;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:600;">Katalog-Updates öffnen</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
