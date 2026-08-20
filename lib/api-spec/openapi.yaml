@@ -1,0 +1,3732 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Klard – Booking platform for consultants
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: categories
+    description: Service categories
+  - name: providers
+    description: Provider operations
+  - name: services
+    description: Service offerings
+  - name: availability
+    description: Time slot operations
+  - name: bookings
+    description: Booking operations
+  - name: reviews
+    description: Review operations
+  - name: ai
+    description: AI offer generation
+  - name: dashboard
+    description: Dashboard summaries
+  - name: billing
+    description: Subscription and payment operations
+  - name: calendar
+    description: Calendar synchronization (iCalendar feeds)
+  - name: storage
+    description: Object storage uploads
+  - name: assessments
+    description: Saved building energy assessments
+  - name: invoices
+    description: Provider invoices (§ 14 UStG)
+  - name: admin
+    description: Platform operator admin dashboard
+  - name: energie
+    description: enerwatt24 energy-switching for property managers (Hausverwalter/Bestandshalter)
+  - name: requests
+    description: Pay-per-Lead Anfrage/Angebot (RfQ) marketplace — open requests, provider offers, wallet
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /classification:
+    get:
+      operationId: getClassification
+      tags: [categories]
+      summary: Get the world to area classification hierarchy (Welten and Bereiche)
+      responses:
+        "200":
+          description: Classification hierarchy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Classification"
+
+  /service-templates:
+    get:
+      operationId: listServiceTemplates
+      tags: [services]
+      summary: List service templates for a given category slug
+      parameters:
+        - name: category
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServiceTemplate"
+
+  /storage/uploads/request-url:
+    post:
+      operationId: requestUploadUrl
+      tags: [storage]
+      summary: Request a presigned upload URL for object storage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
+      responses:
+        "200":
+          description: Upload URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+
+  /providers:
+    get:
+      operationId: listProviders
+      tags: [providers]
+      summary: Search/list providers
+      parameters:
+        - name: zip
+          in: query
+          schema: { type: string }
+        - name: city
+          in: query
+          schema: { type: string }
+        - name: category
+          in: query
+          schema: { type: string }
+        - name: area
+          in: query
+          description: Filter by classification area id (resolves to all professions in that Bereich)
+          schema: { type: string }
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: minPrice
+          in: query
+          schema: { type: number }
+        - name: maxPrice
+          in: query
+          schema: { type: number }
+        - name: limit
+          in: query
+          schema: { type: integer }
+        - name: offset
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProviderSummary"
+    post:
+      operationId: createProvider
+      tags: [providers]
+      summary: Create a provider profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProviderInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Provider"
+
+  /providers/{id}:
+    get:
+      operationId: getProvider
+      tags: [providers]
+      summary: Get provider details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Provider detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Provider"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateProvider
+      tags: [providers]
+      summary: Update provider profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProviderUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Provider"
+
+  /providers/me:
+    get:
+      operationId: getMyProviderProfile
+      tags: [providers]
+      summary: Get the authenticated user's provider profile
+      responses:
+        "200":
+          description: Provider profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Provider"
+        "404":
+          description: Not found (not yet a provider)
+
+  /account/me:
+    delete:
+      operationId: deleteMyAccount
+      tags: [account]
+      summary: Permanently delete the current user's entire account (provider + customer data + login)
+      responses:
+        "200":
+          description: Account deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [deleted]
+                properties:
+                  deleted:
+                    type: boolean
+        "401":
+          description: Unauthorized
+
+  /account/role:
+    get:
+      operationId: getMyRole
+      tags: [account]
+      summary: Get the current user's role (customer | provider), or null if none claimed yet
+      responses:
+        "200":
+          description: Current role
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountRole"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: claimMyRole
+      tags: [account]
+      summary: Claim a role for the current user (fails 409 if the other role is already held)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClaimRoleBody"
+      responses:
+        "200":
+          description: Role after claim
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountRole"
+        "401":
+          description: Unauthorized
+        "409":
+          description: Account already holds the other role
+
+  /providers/{id}/services:
+    get:
+      operationId: listProviderServices
+      tags: [services]
+      summary: List services for a provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+    post:
+      operationId: createService
+      tags: [services]
+      summary: Add a service to a provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    patch:
+      operationId: updateService
+      tags: [services]
+      summary: Update a service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      summary: Delete a service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /providers/{id}/availability:
+    get:
+      operationId: listAvailability
+      tags: [availability]
+      summary: Get available time slots for a provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeSlot"
+
+  /availability:
+    post:
+      operationId: createTimeSlot
+      tags: [availability]
+      summary: Create a time slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeSlotInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeSlot"
+    delete:
+      operationId: deleteTimeSlot
+      tags: [availability]
+      summary: Delete a time slot
+      parameters:
+        - name: slotId
+          in: query
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /bookings:
+    post:
+      operationId: createBooking
+      tags: [bookings]
+      summary: Create a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingInput"
+      responses:
+        "201":
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+    get:
+      operationId: listMyBookings
+      tags: [bookings]
+      summary: List bookings for the authenticated user (as customer)
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+
+  /bookings/{id}:
+    get:
+      operationId: getBooking
+      tags: [bookings]
+      summary: Get booking details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /bookings/{id}/status:
+    patch:
+      operationId: updateBookingStatus
+      tags: [bookings]
+      summary: Update booking status (confirm / cancel)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingStatusUpdate"
+      responses:
+        "200":
+          description: Updated booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /providers/{id}/bookings:
+    get:
+      operationId: listProviderBookings
+      tags: [bookings]
+      summary: List bookings for a provider (dashboard)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+
+  /providers/me/ical-conflicts:
+    get:
+      operationId: listMyIcalConflicts
+      tags: [providers]
+      summary: List external-calendar conflicts with the authenticated provider's Klard bookings
+      description: >-
+        Returns the conflicts detected during external iCal sync where an
+        imported busy interval overlapped an active Klard booking and was
+        therefore skipped (the Klard booking wins). Lets the provider see and
+        resolve the clash on their side.
+      responses:
+        "200":
+          description: List of iCal/booking conflicts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IcalBookingConflict"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Provider profile not found
+
+  /providers/{id}/reviews:
+    get:
+      operationId: listProviderReviews
+      tags: [reviews]
+      summary: List reviews for a provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+
+  /reviews:
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Leave a review for a completed booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Review created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  /ai/offer:
+    post:
+      operationId: generateAiOffer
+      tags: [ai]
+      summary: Generate an AI offer for a service inquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiOfferRequest"
+      responses:
+        "200":
+          description: Generated offer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiOfferResponse"
+
+  /berater/ai-profiltext:
+    post:
+      operationId: generateBeraterProfiltext
+      tags: [ai]
+      summary: Generate an AI profile bio for an Energieberater registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BeraterProfiltextRequest"
+      responses:
+        "200":
+          description: Generated profile text
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BeraterProfiltextResponse"
+
+  /dashboard/provider/{id}:
+    get:
+      operationId: getProviderDashboard
+      tags: [dashboard]
+      summary: Get provider dashboard summary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProviderDashboard"
+
+  /providers/me/subscription/checkout:
+    post:
+      operationId: createSubscriptionCheckout
+      tags: [billing]
+      summary: Create a Stripe Checkout Session for the Premium provider subscription
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /providers/me/subscription:
+    get:
+      operationId: getMySubscription
+      tags: [billing]
+      summary: Get current provider subscription status
+      responses:
+        "200":
+          description: Subscription status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionStatus"
+    delete:
+      operationId: cancelMySubscription
+      tags: [billing]
+      summary: Cancel premium subscription at period end
+      responses:
+        "200":
+          description: Cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionStatus"
+
+  /bookings/{id}/payment/checkout:
+    post:
+      operationId: createBookingCheckout
+      tags: [billing]
+      summary: Create a Stripe Checkout Session for a booking payment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /providers/me/connect:
+    get:
+      operationId: getMyConnectStatus
+      tags: [billing]
+      summary: Get the signed-in provider's Stripe Connect (payout) status
+      responses:
+        "200":
+          description: Connect status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectStatus"
+
+  /providers/me/connect/onboard:
+    post:
+      operationId: createConnectOnboarding
+      tags: [billing]
+      summary: Create a Stripe Connect Express account (if needed) and return an onboarding link
+      responses:
+        "200":
+          description: Onboarding link created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectOnboardingLink"
+
+  /providers/{id}/calendar.ics:
+    get:
+      operationId: getProviderCalendarFeed
+      tags: [calendar]
+      summary: iCal feed of confirmed bookings for a provider (token via ?token=)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: iCalendar (.ics) feed
+          content:
+            text/calendar:
+              schema: { type: string }
+
+  /bookings/{id}/calendar.ics:
+    get:
+      operationId: getBookingCalendarFile
+      tags: [calendar]
+      summary: Download .ics file for a single booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: iCalendar (.ics) file
+          content:
+            text/calendar:
+              schema: { type: string }
+
+  /assessments:
+    get:
+      operationId: listAssessments
+      tags: [assessments]
+      summary: List the current user's saved building assessments
+      responses:
+        "200":
+          description: List of assessments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Assessment"
+    post:
+      operationId: createAssessment
+      tags: [assessments]
+      summary: Save a new building assessment for the current user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessmentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assessment"
+
+  /assessments/{id}:
+    get:
+      operationId: getAssessment
+      tags: [assessments]
+      summary: Get a single saved assessment (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Assessment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assessment"
+    delete:
+      operationId: deleteAssessment
+      tags: [assessments]
+      summary: Delete a saved assessment (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /gebaeudecheck/credits:
+    get:
+      operationId: getGebaeudecheckCredits
+      tags: [gebaeudecheck]
+      summary: Current user's Gebäudecheck report credit balance + package catalog
+      responses:
+        "200":
+          description: Credit balance and available packages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GebaeudecheckCredits"
+
+  /gebaeudecheck/checkout:
+    post:
+      operationId: createGebaeudecheckCheckout
+      tags: [gebaeudecheck]
+      summary: Create a Stripe Checkout Session to buy a Gebäudecheck credit package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GebaeudecheckCheckoutInput"
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /gebaeudecheck/reconcile:
+    post:
+      operationId: reconcileGebaeudecheckOrder
+      tags: [gebaeudecheck]
+      summary: Grant credits after a successful Checkout redirect (idempotent)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GebaeudecheckReconcileInput"
+      responses:
+        "200":
+          description: Reconcile result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GebaeudecheckReconcileResult"
+
+  /foerderschiene/programme:
+    get:
+      operationId: listFoerderProgramme
+      tags: [foerderschiene]
+      summary: List all active funding programs (Förderprogramme)
+      responses:
+        "200":
+          description: List of funding programs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoerderProgramm"
+
+  /foerderschiene/match:
+    post:
+      operationId: matchFoerderschiene
+      tags: [foerderschiene]
+      summary: Match a building profile to eligible funding programs + cost estimates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FoerderMatchInput"
+      responses:
+        "200":
+          description: Matched programs and recommended measures
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderMatchResult"
+
+  /foerderschiene/report/checkout:
+    post:
+      operationId: createReportCheckout
+      tags: [foerderschiene]
+      summary: Create a Stripe Checkout Session to buy the detailed Gebäudereport PDF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportCheckoutInput"
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /foerderschiene/report/reconcile:
+    post:
+      operationId: reconcileReport
+      tags: [foerderschiene]
+      summary: Unlock a paid report after the Checkout redirect (idempotent)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GebaeudecheckReconcileInput"
+      responses:
+        "200":
+          description: Reconcile result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderschieneReport"
+
+  /foerderschiene/reports:
+    get:
+      operationId: listMyReports
+      tags: [foerderschiene]
+      summary: List the current user's saved Gebäudereports
+      responses:
+        "200":
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoerderschieneReport"
+
+  /foerderschiene/energieausweis/checkout:
+    post:
+      operationId: createEnergieausweisCheckout
+      tags: [foerderschiene]
+      summary: Create a paid Energieausweis order + Stripe Checkout Session (fulfilled by a certified Aussteller)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnergieausweisOrderInput"
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /foerderschiene/energieausweis/reconcile:
+    post:
+      operationId: reconcileEnergieausweis
+      tags: [foerderschiene]
+      summary: Mark an Energieausweis order paid after the Checkout redirect (idempotent)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GebaeudecheckReconcileInput"
+      responses:
+        "200":
+          description: The order after reconcile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnergieausweisOrder"
+
+  /foerderschiene/energieausweis/orders:
+    get:
+      operationId: listMyEnergieausweisOrders
+      tags: [foerderschiene]
+      summary: List the current user's Energieausweis orders + their issuer status
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EnergieausweisOrder"
+
+  /foerderschiene/finder:
+    post:
+      operationId: submitFoerderFinder
+      tags: [foerderschiene]
+      summary: Submit the public Förderprogramm-Finder wizard — stores a lead and emails an AI funding analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FoerderFinderInput"
+      responses:
+        "201":
+          description: Lead stored; analysis email is being generated and sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderFinderResult"
+
+  /admin/foerder-leads:
+    get:
+      operationId: listAdminFoerderLeads
+      tags: [admin]
+      summary: List Förderprogramm-Finder leads (newest first)
+      responses:
+        "200":
+          description: Leads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoerderFinderLead"
+
+  /admin/foerder-update:
+    post:
+      operationId: triggerFoerderUpdate
+      tags: [admin]
+      summary: Manually trigger the weekly funding-programme catalogue update
+      responses:
+        "200":
+          description: Update log rows for this run (one per source)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoerderUpdateLog"
+
+  /admin/foerder-update-log:
+    get:
+      operationId: listFoerderUpdateLog
+      tags: [admin]
+      summary: List funding-programme update runs (newest first)
+      responses:
+        "200":
+          description: Update log
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoerderUpdateLog"
+
+  /offers/accept:
+    post:
+      operationId: acceptOffer
+      tags: [offers]
+      summary: Customer legally accepts an offer (selected services) from a provider
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcceptOfferInput"
+      responses:
+        "201":
+          description: Offer accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferAcceptance"
+
+  /offers/mine:
+    get:
+      operationId: listMyOffers
+      tags: [offers]
+      summary: List offers the current user has accepted
+      responses:
+        "200":
+          description: List of accepted offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OfferAcceptance"
+
+  /requests:
+    post:
+      operationId: createRequest
+      tags: [requests]
+      summary: Post an open request (Anfrage). Public — works for guests and logged-in customers.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestInput"
+      responses:
+        "201":
+          description: Request created, matching providers notified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateRequestResult"
+
+  /requests/mine:
+    get:
+      operationId: listMyRequests
+      tags: [requests]
+      summary: List the logged-in customer's own requests
+      responses:
+        "200":
+          description: List of requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RfqRequest"
+
+  /requests/access:
+    post:
+      operationId: accessRequest
+      tags: [requests]
+      summary: >-
+        Fetch a single request together with its received offers. Works for the
+        owning logged-in customer, or for a guest who presents the one-time
+        access token (passed in the body, never the query string, so it is not
+        logged).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestAccessInput"
+      responses:
+        "200":
+          description: The request with its offers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestWithOffers"
+
+  /request-offers/{id}/accept:
+    post:
+      operationId: acceptRequestOffer
+      tags: [requests]
+      summary: Customer accepts a provider's offer (owning customer, or a guest who presents the access token in the body)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcceptRequestOfferInput"
+      responses:
+        "200":
+          description: The accepted offer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RfqOffer"
+
+  /providers/me/requests:
+    get:
+      operationId: listProviderRequests
+      tags: [requests]
+      summary: Matched requests for the signed-in provider (contact anonymized until an offer is sent)
+      responses:
+        "200":
+          description: Matched requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RfqRequestForProvider"
+
+  /providers/me/requests/{requestId}:
+    get:
+      operationId: getProviderRequest
+      tags: [requests]
+      summary: A single matched request for the signed-in provider (sets viewed); contact anonymized until offered
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: The matched request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RfqRequestForProvider"
+
+  /providers/me/requests/{requestId}/offers:
+    post:
+      operationId: createProviderOffer
+      tags: [requests]
+      summary: Send an offer on a request (charges the server-computed lead fee from the wallet)
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProviderOfferInput"
+      responses:
+        "201":
+          description: Offer sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateOfferResult"
+
+  /providers/me/wallet:
+    get:
+      operationId: getMyWallet
+      tags: [requests]
+      summary: The signed-in provider's lead wallet (balance, recent transactions, tier entitlements)
+      responses:
+        "200":
+          description: Wallet status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletStatus"
+
+  /providers/me/wallet/topup:
+    post:
+      operationId: createWalletTopup
+      tags: [requests]
+      summary: Create a Stripe Checkout Session to top up the lead wallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WalletTopupInput"
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /leads/{leadFeeId}/refund:
+    post:
+      operationId: refundLead
+      tags: [requests]
+      summary: Lead-Garantie — refund a dead lead fee back to the provider's wallet (provider owner only)
+      parameters:
+        - name: leadFeeId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadRefundInput"
+      responses:
+        "200":
+          description: Refund applied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadRefundResult"
+
+  /immobilien-kunde/me:
+    get:
+      operationId: getMyImmobilienKunde
+      tags: [immobilienKunde]
+      summary: Current user's Immobilien-Kundenprofil (Hausverwalter/Bestandshalter)
+      responses:
+        "200":
+          description: The profile, or null if none exists
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ImmobilienKunde"
+                  - type: "null"
+    put:
+      operationId: upsertMyImmobilienKunde
+      tags: [immobilienKunde]
+      summary: Create or update the current user's Immobilien-Kundenprofil
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImmobilienKundeInput"
+      responses:
+        "200":
+          description: The saved profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImmobilienKunde"
+
+  /immobilien-portfolio/objekte:
+    get:
+      operationId: listImmobilienPortfolioObjekte
+      tags: [immobilienPortfolio]
+      summary: List the current user's Immobilienportfolio properties
+      responses:
+        "200":
+          description: The user's portfolio properties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImmobilienPortfolioObjekt"
+    post:
+      operationId: createImmobilienPortfolioObjekt
+      tags: [immobilienPortfolio]
+      summary: Add a property to the current user's portfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImmobilienPortfolioObjektInput"
+      responses:
+        "201":
+          description: The created property
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImmobilienPortfolioObjekt"
+
+  /immobilien-portfolio/objekte/{id}:
+    put:
+      operationId: updateImmobilienPortfolioObjekt
+      tags: [immobilienPortfolio]
+      summary: Update one of the current user's portfolio properties
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImmobilienPortfolioObjektInput"
+      responses:
+        "200":
+          description: The updated property
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImmobilienPortfolioObjekt"
+    delete:
+      operationId: deleteImmobilienPortfolioObjekt
+      tags: [immobilienPortfolio]
+      summary: Delete one of the current user's portfolio properties
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /verwaltete-kunden:
+    get:
+      operationId: listVerwalteteKunden
+      tags: [verwalteteKunden]
+      summary: List the current user's verwaltete/betreute Kunden
+      responses:
+        "200":
+          description: The user's managed clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VerwalteterKunde"
+    post:
+      operationId: createVerwalteterKunde
+      tags: [verwalteteKunden]
+      summary: Add a managed client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerwalteterKundeInput"
+      responses:
+        "201":
+          description: The created client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerwalteterKunde"
+
+  /verwaltete-kunden/{id}:
+    put:
+      operationId: updateVerwalteterKunde
+      tags: [verwalteteKunden]
+      summary: Update one of the current user's managed clients
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerwalteterKundeInput"
+      responses:
+        "200":
+          description: The updated client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerwalteterKunde"
+    delete:
+      operationId: deleteVerwalteterKunde
+      tags: [verwalteteKunden]
+      summary: Delete one of the current user's managed clients
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /customer-profile/me:
+    get:
+      operationId: getMyCustomerProfile
+      tags: [customerProfile]
+      summary: Current user's basic customer profile (address + preferences)
+      responses:
+        "200":
+          description: The profile, or null if none exists
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CustomerProfile"
+                  - type: "null"
+    put:
+      operationId: upsertMyCustomerProfile
+      tags: [customerProfile]
+      summary: Create or update the current user's basic customer profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerProfileInput"
+      responses:
+        "200":
+          description: The saved profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerProfile"
+
+  /providers/me/invoice-settings:
+    get:
+      operationId: getMyInvoiceSettings
+      tags: [invoices]
+      summary: Get the authenticated provider's invoice settings
+      responses:
+        "200":
+          description: Invoice settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceSettings"
+    patch:
+      operationId: updateMyInvoiceSettings
+      tags: [invoices]
+      summary: Update the authenticated provider's invoice settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvoiceSettingsUpdate"
+      responses:
+        "200":
+          description: Updated invoice settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceSettings"
+
+  /invoices/me:
+    get:
+      operationId: listMyProviderInvoices
+      tags: [invoices]
+      summary: List invoices issued by the authenticated provider
+      responses:
+        "200":
+          description: List of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Invoice"
+
+  /invoices/customer:
+    get:
+      operationId: listMyCustomerInvoices
+      tags: [invoices]
+      summary: List invoices received by the authenticated customer
+      responses:
+        "200":
+          description: List of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Invoice"
+
+  /invoices/{id}/pdf:
+    get:
+      operationId: getInvoicePdf
+      tags: [invoices]
+      summary: Download an invoice PDF (provider owner or booking customer)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /bookings/{id}/invoice:
+    post:
+      operationId: issueInvoiceForBooking
+      tags: [invoices]
+      summary: Manually issue (or re-fetch) the invoice for a paid booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Invoice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+
+  /dashboard/stats:
+    get:
+      operationId: getPlatformStats
+      tags: [dashboard]
+      summary: Platform-level stats (total providers, categories, bookings)
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
+  /admin/me:
+    get:
+      operationId: getAdminMe
+      tags: [admin]
+      summary: Returns whether the current user is an admin
+      responses:
+        "200":
+          description: Admin status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminMe"
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Platform-wide aggregate statistics
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminStats"
+
+  /admin/timeseries:
+    get:
+      operationId: getAdminTimeseries
+      tags: [admin]
+      summary: Daily bookings and revenue time-series
+      parameters:
+        - name: days
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 365, default: 30 }
+      responses:
+        "200":
+          description: Daily points
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminTimeseriesPoint"
+
+  /admin/providers:
+    get:
+      operationId: listAdminProviders
+      tags: [admin]
+      summary: All providers with usage metrics
+      responses:
+        "200":
+          description: Providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminProviderRow"
+
+  /admin/providers/{id}/approval:
+    patch:
+      operationId: updateAdminProviderApproval
+      tags: [admin]
+      summary: Approve or reject a provider profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminProviderApprovalUpdate"
+      responses:
+        "200":
+          description: Updated provider row
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminProviderRow"
+        "400":
+          description: Invalid request
+        "404":
+          description: Provider not found
+
+  /admin/customers:
+    get:
+      operationId: listAdminCustomers
+      tags: [admin]
+      summary: Distinct customers with booking aggregates
+      responses:
+        "200":
+          description: Customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminCustomerRow"
+
+  /admin/bookings:
+    get:
+      operationId: listAdminBookings
+      tags: [admin]
+      summary: Recent bookings across the platform
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 500, default: 100 }
+        - name: status
+          in: query
+          schema: { type: string, enum: [pending, confirmed, completed, cancelled] }
+      responses:
+        "200":
+          description: Bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminBookingRow"
+
+  /admin/refunded-orders:
+    get:
+      operationId: listAdminRefundedOrders
+      tags: [admin]
+      summary: Refunded checkout purchases across Förderschiene products
+      responses:
+        "200":
+          description: Refunded purchases, newest refund first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminRefundedOrder"
+
+  /admin/categories:
+    get:
+      operationId: listAdminCategories
+      tags: [admin]
+      summary: Category breakdown with booking and revenue counts
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminCategoryRow"
+
+  /energie/verwalter/me:
+    get:
+      operationId: getMyVerwalter
+      tags: [energie]
+      summary: Get the current user's Verwalter (energy portfolio) account, or null
+      responses:
+        "200":
+          description: Verwalter account or null
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Verwalter"
+                  - type: "null"
+    post:
+      operationId: createMyVerwalter
+      tags: [energie]
+      summary: Onboard the current user as a Verwalter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerwalterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Verwalter"
+    patch:
+      operationId: updateMyVerwalter
+      tags: [energie]
+      summary: Update the current user's Verwalter account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerwalterInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Verwalter"
+
+  /energie/portfolio:
+    get:
+      operationId: getEnergiePortfolio
+      tags: [energie]
+      summary: Portfolio KPIs and full object/meter/contract tree
+      responses:
+        "200":
+          description: Portfolio overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioOverview"
+
+  /energie/objekte:
+    post:
+      operationId: createObjekt
+      tags: [energie]
+      summary: Add a building (Objekt) to the portfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjektInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Objekt"
+
+  /energie/objekte/{id}:
+    delete:
+      operationId: deleteObjekt
+      tags: [energie]
+      summary: Delete a building (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /energie/zaehlpunkte:
+    post:
+      operationId: createZaehlpunkt
+      tags: [energie]
+      summary: Add a metering point (Zählpunkt) to a building
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZaehlpunktInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zaehlpunkt"
+
+  /energie/zaehlpunkte/{id}:
+    delete:
+      operationId: deleteZaehlpunkt
+      tags: [energie]
+      summary: Delete a metering point (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /energie/vertraege:
+    post:
+      operationId: createVertrag
+      tags: [energie]
+      summary: Record the current supply contract for a metering point
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VertragInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vertrag"
+
+  /energie/vollmachten:
+    get:
+      operationId: listVollmachten
+      tags: [energie]
+      summary: List the Verwalter's powers of attorney
+      responses:
+        "200":
+          description: List of Vollmachten
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vollmacht"
+    post:
+      operationId: createVollmacht
+      tags: [energie]
+      summary: Grant a new power of attorney
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VollmachtInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vollmacht"
+
+  /energie/vollmachten/{id}/status:
+    patch:
+      operationId: updateVollmachtStatus
+      tags: [energie]
+      summary: Change a power of attorney's status (activate, pause, revoke)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VollmachtStatusUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vollmacht"
+
+  /energie/wechsel:
+    get:
+      operationId: listWechselvorgaenge
+      tags: [energie]
+      summary: List switch processes across the portfolio
+      responses:
+        "200":
+          description: List of switch processes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Wechselvorgang"
+
+  /energie/wechsel/analyse:
+    post:
+      operationId: starteAnalyse
+      tags: [energie]
+      summary: Start an AI tariff analysis for a metering point
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalyseInput"
+      responses:
+        "201":
+          description: Switch process created with recommendation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wechselvorgang"
+
+  /energie/wechsel/{id}/freigeben:
+    post:
+      operationId: freigebenWechsel
+      tags: [energie]
+      summary: Approve a switch (runs the simulated market execution)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated switch process
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wechselvorgang"
+
+  /energie/wechsel/{id}/ablehnen:
+    post:
+      operationId: ablehnenWechsel
+      tags: [energie]
+      summary: Reject a recommended switch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated switch process
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wechselvorgang"
+
+  /energie/wechsel/{id}/widersprechen:
+    post:
+      operationId: widersprechenWechsel
+      tags: [energie]
+      summary: Object to a switch within the objection window
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated switch process
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wechselvorgang"
+
+  /energie/audit:
+    get:
+      operationId: listAuditLog
+      tags: [energie]
+      summary: List the Verwalter's audit trail
+      responses:
+        "200":
+          description: Audit entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AuditEntry"
+
+  /energie/tarife:
+    get:
+      operationId: listTarife
+      tags: [energie]
+      summary: List available tariff offers (transparency feed)
+      parameters:
+        - name: sparte
+          in: query
+          required: false
+          schema: { type: string }
+      responses:
+        "200":
+          description: Tariff offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TarifAngebot"
+
+components:
+  schemas:
+    AdminMe:
+      type: object
+      required: [isAdmin]
+      properties:
+        isAdmin: { type: boolean }
+
+    AccountRole:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: ["string", "null"]
+          enum: [customer, provider, null]
+          description: The role bound to this account, or null if none has been claimed.
+
+    ClaimRoleBody:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: string
+          enum: [customer, provider]
+
+    Verwalter:
+      type: object
+      required: [id, clerkUserId, firma, typ, erlaubnis34c, provisionsmodell, aktiv, createdAt]
+      properties:
+        id: { type: integer }
+        clerkUserId: { type: string }
+        firma: { type: string }
+        typ: { type: string }
+        handelsregisterNr: { type: ["string", "null"] }
+        ustId: { type: ["string", "null"] }
+        erlaubnis34c: { type: boolean }
+        strasse: { type: ["string", "null"] }
+        plz: { type: ["string", "null"] }
+        ort: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        telefon: { type: ["string", "null"] }
+        provisionsmodell: { type: string }
+        aktiv: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    VerwalterInput:
+      type: object
+      required: [firma, typ]
+      properties:
+        firma: { type: string, minLength: 1, maxLength: 200 }
+        typ: { type: string, enum: [hausverwaltung, weg_verwalter, bestandshalter, gewerbe] }
+        handelsregisterNr: { type: ["string", "null"] }
+        ustId: { type: ["string", "null"] }
+        erlaubnis34c: { type: boolean }
+        strasse: { type: ["string", "null"] }
+        plz: { type: ["string", "null"] }
+        ort: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        telefon: { type: ["string", "null"] }
+        provisionsmodell: { type: string, enum: [saas_flat, erfolgsprovision, hybrid] }
+
+    Objekt:
+      type: object
+      required: [id, verwalterId, bezeichnung, strasse, plz, ort, wegBeschluss, createdAt]
+      properties:
+        id: { type: integer }
+        verwalterId: { type: integer }
+        bezeichnung: { type: string }
+        strasse: { type: string }
+        plz: { type: string }
+        ort: { type: string }
+        wegBeschluss: { type: boolean }
+        wegBeschlussDatum: { type: ["string", "null"] }
+        notiz: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    ObjektInput:
+      type: object
+      required: [bezeichnung, strasse, plz, ort]
+      properties:
+        bezeichnung: { type: string, minLength: 1, maxLength: 200 }
+        strasse: { type: string, minLength: 1 }
+        plz: { type: string, minLength: 4, maxLength: 5 }
+        ort: { type: string, minLength: 1 }
+        wegBeschluss: { type: boolean }
+        wegBeschlussDatum: { type: ["string", "null"] }
+        notiz: { type: ["string", "null"] }
+
+    Zaehlpunkt:
+      type: object
+      required: [id, objektId, sparte, art, createdAt]
+      properties:
+        id: { type: integer }
+        objektId: { type: integer }
+        sparte: { type: string }
+        art: { type: string }
+        maloId: { type: ["string", "null"] }
+        zaehlernummer: { type: ["string", "null"] }
+        jahresverbrauchKwh: { type: ["number", "null"] }
+        jahresverbrauchLiter: { type: ["number", "null"] }
+        netzbetreiber: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    ZaehlpunktInput:
+      type: object
+      required: [objektId, sparte]
+      properties:
+        objektId: { type: integer }
+        sparte: { type: string, enum: [strom, gas, heizoel, fernwaerme] }
+        art: { type: string, enum: [allgemeinstrom, mieterstrom, gewerbe, heizung, waermepumpe, sonstige] }
+        maloId: { type: ["string", "null"] }
+        zaehlernummer: { type: ["string", "null"] }
+        jahresverbrauchKwh: { type: ["number", "null"] }
+        jahresverbrauchLiter: { type: ["number", "null"] }
+        netzbetreiber: { type: ["string", "null"] }
+
+    Vertrag:
+      type: object
+      required: [id, zaehlpunktId, versorger, kuendigungsfristTage, istAktiv, quelle, createdAt]
+      properties:
+        id: { type: integer }
+        zaehlpunktId: { type: integer }
+        versorger: { type: string }
+        tarifname: { type: ["string", "null"] }
+        arbeitspreisCtKwh: { type: ["number", "null"] }
+        grundpreisEurJahr: { type: ["number", "null"] }
+        vertragsbeginn: { type: ["string", "null"] }
+        erstlaufzeitEnde: { type: ["string", "null"] }
+        kuendigungsfristTage: { type: integer }
+        naechsterKuendigungstermin: { type: ["string", "null"] }
+        preisgarantieBis: { type: ["string", "null"] }
+        istAktiv: { type: boolean }
+        quelle: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    VertragInput:
+      type: object
+      required: [zaehlpunktId, versorger]
+      properties:
+        zaehlpunktId: { type: integer }
+        versorger: { type: string, minLength: 1 }
+        tarifname: { type: ["string", "null"] }
+        arbeitspreisCtKwh: { type: ["number", "null"] }
+        grundpreisEurJahr: { type: ["number", "null"] }
+        vertragsbeginn: { type: ["string", "null"] }
+        erstlaufzeitEnde: { type: ["string", "null"] }
+        kuendigungsfristTage: { type: ["integer", "null"] }
+        naechsterKuendigungstermin: { type: ["string", "null"] }
+        preisgarantieBis: { type: ["string", "null"] }
+
+    Vollmacht:
+      type: object
+      required: [id, verwalterId, status, modus, darfKuendigen, darfAbschliessen, darfSonderkuendigung, darfDatenAbfragen, darfBankdatenWeitergeben, widerspruchsfristTage, createdAt]
+      properties:
+        id: { type: integer }
+        verwalterId: { type: integer }
+        objektId: { type: ["integer", "null"] }
+        sparte: { type: ["string", "null"] }
+        status: { type: string }
+        modus: { type: string }
+        darfKuendigen: { type: boolean }
+        darfAbschliessen: { type: boolean }
+        darfSonderkuendigung: { type: boolean }
+        darfDatenAbfragen: { type: boolean }
+        darfBankdatenWeitergeben: { type: boolean }
+        widerspruchsfristTage: { type: integer }
+        gueltigAb: { type: ["string", "null"] }
+        gueltigBis: { type: ["string", "null"] }
+        erteiltAm: { type: ["string", "null"], format: date-time }
+        widerrufenAm: { type: ["string", "null"], format: date-time }
+        widerrufGrund: { type: ["string", "null"] }
+        dokumentPfad: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    VollmachtInput:
+      type: object
+      required: [modus]
+      properties:
+        objektId: { type: ["integer", "null"] }
+        sparte: { type: ["string", "null"], enum: [strom, gas, heizoel, fernwaerme, null] }
+        modus: { type: string, enum: [nur_vorschlag, freigabe_erforderlich, vollautomatisch] }
+        darfKuendigen: { type: boolean }
+        darfAbschliessen: { type: boolean }
+        darfSonderkuendigung: { type: boolean }
+        darfDatenAbfragen: { type: boolean }
+        darfBankdatenWeitergeben: { type: boolean }
+        widerspruchsfristTage: { type: integer, minimum: 1, maximum: 60 }
+        gueltigAb: { type: ["string", "null"] }
+        gueltigBis: { type: ["string", "null"] }
+
+    VollmachtStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [aktiv, pausiert, widerrufen, abgelaufen] }
+        widerrufGrund: { type: ["string", "null"] }
+
+    Wechselvorgang:
+      type: object
+      required: [id, zaehlpunktId, vollmachtId, status, createdAt]
+      properties:
+        id: { type: integer }
+        zaehlpunktId: { type: integer }
+        vollmachtId: { type: integer }
+        altVertragId: { type: ["integer", "null"] }
+        status: { type: string }
+        empfVersorger: { type: ["string", "null"] }
+        empfTarif: { type: ["string", "null"] }
+        empfArbeitspreisCtKwh: { type: ["number", "null"] }
+        empfGrundpreisEurJahr: { type: ["number", "null"] }
+        ersparnisEurJahr: { type: ["number", "null"] }
+        ersparnisProzent: { type: ["number", "null"] }
+        anzahlVerglicheneAnbieter: { type: ["integer", "null"] }
+        kiBegruendung: { type: ["string", "null"] }
+        freigegebenAm: { type: ["string", "null"], format: date-time }
+        widerspruchBis: { type: ["string", "null"], format: date-time }
+        neuVertragId: { type: ["integer", "null"] }
+        abgeschlossenAm: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    AnalyseInput:
+      type: object
+      required: [zaehlpunktId]
+      properties:
+        zaehlpunktId: { type: integer }
+        vollmachtId: { type: ["integer", "null"] }
+
+    AuditEntry:
+      type: object
+      required: [id, akteur, aktion, zeitpunkt]
+      properties:
+        id: { type: integer }
+        verwalterId: { type: ["integer", "null"] }
+        vollmachtId: { type: ["integer", "null"] }
+        wechselId: { type: ["integer", "null"] }
+        akteur: { type: string }
+        aktion: { type: string }
+        details:
+          type: ["object", "null"]
+          additionalProperties: true
+        zeitpunkt: { type: string, format: date-time }
+
+    TarifAngebot:
+      type: object
+      required: [id, sparte, versorger, tarifname, arbeitspreisCtKwh, grundpreisEurJahr, oekostrom]
+      properties:
+        id: { type: integer }
+        sparte: { type: string }
+        versorger: { type: string }
+        tarifname: { type: string }
+        arbeitspreisCtKwh: { type: number }
+        grundpreisEurJahr: { type: number }
+        laufzeitMonate: { type: ["integer", "null"] }
+        preisgarantieMonate: { type: ["integer", "null"] }
+        oekostrom: { type: boolean }
+        minVerbrauchKwh: { type: ["number", "null"] }
+        maxVerbrauchKwh: { type: ["number", "null"] }
+        plzGebiet: { type: ["string", "null"] }
+
+    PortfolioKpi:
+      type: object
+      required: [anzahlObjekte, anzahlZaehlpunkte, aktiveVertraege, kuendigungen60Tage, realisierteErsparnisEur, potenzialErsparnisEur]
+      properties:
+        anzahlObjekte: { type: integer }
+        anzahlZaehlpunkte: { type: integer }
+        aktiveVertraege: { type: integer }
+        kuendigungen60Tage: { type: integer }
+        realisierteErsparnisEur: { type: number }
+        potenzialErsparnisEur: { type: number }
+
+    PortfolioZaehlpunkt:
+      type: object
+      required: [zaehlpunkt]
+      properties:
+        zaehlpunkt: { $ref: "#/components/schemas/Zaehlpunkt" }
+        vertrag:
+          oneOf:
+            - $ref: "#/components/schemas/Vertrag"
+            - type: "null"
+
+    PortfolioObjekt:
+      type: object
+      required: [objekt, zaehlpunkte]
+      properties:
+        objekt: { $ref: "#/components/schemas/Objekt" }
+        zaehlpunkte:
+          type: array
+          items:
+            $ref: "#/components/schemas/PortfolioZaehlpunkt"
+
+    PortfolioOverview:
+      type: object
+      required: [kpi, objekte]
+      properties:
+        kpi: { $ref: "#/components/schemas/PortfolioKpi" }
+        objekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/PortfolioObjekt"
+
+    AdminStats:
+      type: object
+      required: [bookings, providers, customers, categories, reviews, invoices]
+      properties:
+        bookings:
+          type: object
+          required: [total, pending, confirmed, completed, cancelled, revenueAll, revenuePaidCents]
+          properties:
+            total: { type: integer }
+            pending: { type: integer }
+            confirmed: { type: integer }
+            completed: { type: integer }
+            cancelled: { type: integer }
+            revenueAll: { type: integer }
+            revenuePaidCents: { type: integer }
+        providers:
+          type: object
+          required: [total, premium, verified, pending, approved, rejected]
+          properties:
+            total: { type: integer }
+            premium: { type: integer }
+            verified: { type: integer }
+            pending: { type: integer }
+            approved: { type: integer }
+            rejected: { type: integer }
+        customers:
+          type: object
+          required: [total]
+          properties:
+            total: { type: integer }
+        categories:
+          type: object
+          required: [total]
+          properties:
+            total: { type: integer }
+        reviews:
+          type: object
+          required: [total, averageRating]
+          properties:
+            total: { type: integer }
+            averageRating: { type: number }
+        invoices:
+          type: object
+          required: [total, storno, totalCents]
+          properties:
+            total: { type: integer }
+            storno: { type: integer }
+            totalCents: { type: integer }
+
+    AdminTimeseriesPoint:
+      type: object
+      required: [day, bookings, paidRevenueCents]
+      properties:
+        day: { type: string }
+        bookings: { type: integer }
+        paidRevenueCents: { type: integer }
+
+    FoerderFinderInput:
+      type: object
+      required: [name, email, gebaeudeTyp, baujahr, massnahmen, eigennutzer, bundesland, dsgvoConsent]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        email: { type: string, format: email, maxLength: 320 }
+        telefon: { type: string, maxLength: 50 }
+        gebaeudeTyp: { type: string, enum: [einfamilienhaus, zweifamilienhaus, mehrfamilienhaus, wohnung, nichtwohngebaeude] }
+        baujahr: { type: integer, minimum: 1800, maximum: 2026 }
+        massnahmen:
+          type: array
+          minItems: 1
+          maxItems: 6
+          items: { type: string, enum: [heizung, daemmung, fenster, pv, komplett, beratung] }
+        eigennutzer: { type: boolean, description: "true = Eigennutzer, false = Vermieter" }
+        bundesland: { type: string, minLength: 2, maxLength: 60 }
+        dsgvoConsent: { type: boolean, description: "Must be true — GDPR consent to process the data and send the analysis email" }
+
+    FoerderFinderResult:
+      type: object
+      required: [ok, leadId]
+      properties:
+        ok: { type: boolean }
+        leadId: { type: integer }
+
+    FoerderUpdateLog:
+      type: object
+      required: [id, gestartetAm, quelle, eingefuegt, geaendert, deaktiviert]
+      properties:
+        id: { type: integer }
+        gestartetAm: { type: string, format: date-time }
+        abgeschlossenAm: { type: string, format: date-time, nullable: true }
+        quelle: { type: string }
+        eingefuegt: { type: integer }
+        geaendert: { type: integer }
+        deaktiviert: { type: integer }
+        fehler: { type: string, nullable: true }
+
+    FoerderFinderLead:
+      type: object
+      required: [id, name, email, eingaben, emailStatus, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        telefon: { type: ["string", "null"] }
+        eingaben: { type: object, additionalProperties: true }
+        programmAnalyse: { type: ["string", "null"] }
+        emailStatus: { type: string, enum: [pending, sent, failed] }
+        createdAt: { type: string, format: date-time }
+
+    AdminProviderRow:
+      type: object
+      required: [id, displayName, email, category, categorySlug, city, subscriptionTier, verified, approvalStatus, rating, reviewCount, createdAt, bookingCount, paidRevenueCents, distinctCustomers]
+      properties:
+        id: { type: integer }
+        displayName: { type: string }
+        email: { type: string }
+        category: { type: string }
+        categorySlug: { type: string }
+        city: { type: string }
+        subscriptionTier: { type: string }
+        verified: { type: boolean }
+        approvalStatus: { type: string, enum: [pending, approved, rejected] }
+        rejectionReason: { type: ["string", "null"] }
+        reviewedAt: { type: ["string", "null"], format: date-time }
+        rating: { type: number }
+        reviewCount: { type: integer }
+        createdAt: { type: string, format: date-time }
+        bookingCount: { type: integer }
+        paidRevenueCents: { type: integer }
+        distinctCustomers: { type: integer }
+
+    AdminProviderApprovalUpdate:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [approved, rejected] }
+        rejectionReason: { type: string }
+
+    AdminCustomerRow:
+      type: object
+      required: [customerId, bookingCount, paidCount, totalSpentCents, firstBooking, lastBooking]
+      properties:
+        customerId: { type: string }
+        customerName: { type: string, nullable: true }
+        customerEmail: { type: string, nullable: true }
+        bookingCount: { type: integer }
+        paidCount: { type: integer }
+        totalSpentCents: { type: integer }
+        firstBooking: { type: string, format: date-time }
+        lastBooking: { type: string, format: date-time }
+
+    AdminBookingRow:
+      type: object
+      required: [id, customerId, providerId, providerName, serviceName, status, paymentStatus, totalPrice, scheduledAt, createdAt]
+      properties:
+        id: { type: integer }
+        customerId: { type: string }
+        customerName: { type: string, nullable: true }
+        customerEmail: { type: string, nullable: true }
+        providerId: { type: integer }
+        providerName: { type: string }
+        serviceName: { type: string }
+        status: { type: string }
+        paymentStatus: { type: string }
+        totalPrice: { type: number }
+        scheduledAt: { type: string, format: date-time }
+        createdAt: { type: string, format: date-time }
+
+    AdminRefundedOrder:
+      type: object
+      required: [id, product, status, amountCents, createdAt]
+      properties:
+        id: { type: string }
+        product: { type: string }
+        buyerEmail: { type: ["string", "null"] }
+        status: { type: string, enum: [refunded] }
+        amountCents: { type: integer }
+        credits:
+          type: integer
+          description: Total credits purchased in a refunded Gebäudecheck package.
+        creditsDeducted:
+          type: integer
+          description: Unused credits reclaimed from the buyer at refund time.
+        creditsAlreadyUsed:
+          type: integer
+          description: Credits already spent on reports before the refund.
+        createdAt: { type: string, format: date-time }
+        refundedAt: { type: ["string", "null"], format: date-time }
+
+    AdminCategoryRow:
+      type: object
+      required: [slug, name, requiresDirectBilling, providerCount, bookingCount, paidRevenueCents]
+      properties:
+        slug: { type: string }
+        name: { type: string }
+        requiresDirectBilling: { type: boolean }
+        providerCount: { type: integer }
+        bookingCount: { type: integer }
+        paidRevenueCents: { type: integer }
+
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    Category:
+      type: object
+      required: [id, name, slug, icon]
+      properties:
+        id:    { type: integer }
+        name:  { type: string }
+        slug:  { type: string }
+        icon:  { type: string }
+        description:   { type: ["string", "null"] }
+        color:         { type: ["string", "null"] }
+        colorLight:    { type: ["string", "null"] }
+        displayOrder:  { type: integer }
+        providerCount: { type: integer }
+        requiresDirectBilling: { type: boolean }
+        qualifications:
+          type: ["object", "null"]
+          additionalProperties: true
+        worldId:        { type: ["string", "null"] }
+        areaId:         { type: ["string", "null"] }
+        professionCode: { type: ["string", "null"] }
+        pricingModel:   { type: ["string", "null"], enum: [now, lead, hybrid, null] }
+        indicativePrice: { type: ["number", "null"] }
+        priceUnit:      { type: ["string", "null"] }
+        exampleServices: { type: ["string", "null"] }
+        requirements:
+          type: ["array", "null"]
+          items: { type: string }
+
+    World:
+      type: object
+      required: [id, title, defaultPricingModel, displayOrder]
+      properties:
+        id:          { type: string }
+        title:       { type: string }
+        description: { type: ["string", "null"] }
+        defaultPricingModel: { type: string, enum: [now, lead, hybrid] }
+        displayOrder: { type: integer }
+
+    Area:
+      type: object
+      required: [id, worldId, code, name, displayOrder]
+      properties:
+        id:          { type: string }
+        worldId:     { type: string }
+        code:        { type: string }
+        num:         { type: ["string", "null"] }
+        name:        { type: string }
+        description: { type: ["string", "null"] }
+        displayOrder: { type: integer }
+
+    Classification:
+      type: object
+      required: [worlds, areas]
+      properties:
+        worlds:
+          type: array
+          items: { $ref: "#/components/schemas/World" }
+        areas:
+          type: array
+          items: { $ref: "#/components/schemas/Area" }
+
+    ProviderSummary:
+      type: object
+      required: [id, displayName, category, city, zip, rating, reviewCount, minPrice]
+      properties:
+        id:          { type: integer }
+        displayName: { type: string }
+        category:    { type: string }
+        categorySlug: { type: string }
+        city:        { type: string }
+        zip:         { type: string }
+        rating:      { type: number }
+        reviewCount: { type: integer }
+        minPrice:    { type: number }
+        bio:         { type: ["string", "null"] }
+        avatarUrl:   { type: ["string", "null"] }
+        logoUrl:     { type: ["string", "null"] }
+        yearsExperience: { type: ["integer", "null"] }
+        verified:    { type: boolean }
+        subscriptionTier: { type: string, enum: [basic, premium] }
+        requiresDirectBilling: { type: boolean }
+
+    Provider:
+      type: object
+      required: [id, clerkUserId, displayName, category, city, zip, rating, reviewCount, approvalStatus]
+      properties:
+        id:           { type: integer }
+        clerkUserId:  { type: string }
+        displayName:  { type: string }
+        email:        { type: string }
+        phone:        { type: ["string", "null"] }
+        bio:          { type: ["string", "null"] }
+        category:     { type: string }
+        categorySlug: { type: string }
+        city:         { type: string }
+        zip:          { type: string }
+        address:      { type: ["string", "null"] }
+        website:      { type: ["string", "null"] }
+        avatarUrl:    { type: ["string", "null"] }
+        logoUrl:      { type: ["string", "null"] }
+        yearsExperience: { type: ["integer", "null"] }
+        rating:       { type: number }
+        reviewCount:  { type: integer }
+        verified:     { type: boolean }
+        approvalStatus: { type: string, enum: [pending, approved, rejected] }
+        rejectionReason: { type: ["string", "null"] }
+        reviewedAt:     { type: ["string", "null"] }
+        subscriptionTier: { type: string, enum: [basic, premium] }
+        requiresDirectBilling: { type: boolean }
+        premiumSince:    { type: ["string", "null"] }
+        icalToken:       { type: ["string", "null"] }
+        calendarSyncUrl: { type: ["string", "null"] }
+        companyLegalName: { type: ["string", "null"] }
+        taxId:           { type: ["string", "null"] }
+        responseTime:    { type: ["string", "null"] }
+        consultationMode: { type: string, enum: [online, in-person, both] }
+        certificates:    { type: array, items: { type: string } }
+        externalIcalUrl: { type: ["string", "null"] }
+        stripeAccountId: { type: ["string", "null"] }
+        stripeOnboarded: { type: boolean }
+        qualifications:
+          type: ["object", "null"]
+          additionalProperties: true
+        bafaNummer:   { type: ["string", "null"] }
+        kapazitaetStundenProWoche: { type: ["integer", "null"] }
+        createdAt:    { type: string }
+
+    ProviderInput:
+      type: object
+      required: [displayName, category, city, zip]
+      properties:
+        displayName:  { type: string }
+        bio:          { type: string }
+        category:     { type: string }
+        city:         { type: string }
+        zip:          { type: string }
+        address:      { type: string }
+        phone:        { type: string }
+        website:      { type: string }
+        logoUrl:      { type: string }
+        yearsExperience: { type: integer }
+        companyLegalName: { type: string }
+        taxId:        { type: string }
+        responseTime: { type: string }
+        consultationMode: { type: string, enum: [online, in-person, both] }
+        certificates: { type: array, items: { type: string } }
+        externalIcalUrl: { type: string }
+        qualifications:
+          type: object
+          additionalProperties: true
+        bafaNummer:   { type: string }
+        kapazitaetStundenProWoche: { type: integer, minimum: 1, maximum: 80 }
+
+    ProviderUpdate:
+      type: object
+      properties:
+        displayName:  { type: string }
+        bio:          { type: string }
+        category:     { type: string }
+        city:         { type: string }
+        zip:          { type: string }
+        address:      { type: string }
+        phone:        { type: string }
+        website:      { type: string }
+        avatarUrl:    { type: string }
+        logoUrl:      { type: string }
+        yearsExperience: { type: integer }
+        companyLegalName: { type: string }
+        taxId:        { type: string }
+        responseTime: { type: string }
+        consultationMode: { type: string, enum: [online, in-person, both] }
+        certificates: { type: array, items: { type: string } }
+        externalIcalUrl: { type: ["string", "null"] }
+        qualifications:
+          type: object
+          additionalProperties: true
+        bafaNummer:   { type: ["string", "null"] }
+        kapazitaetStundenProWoche: { type: ["integer", "null"], minimum: 1, maximum: 80 }
+
+    Service:
+      type: object
+      required: [id, providerId, name, price, durationMinutes, vatRate]
+      properties:
+        id:              { type: integer }
+        providerId:      { type: integer }
+        name:            { type: string }
+        description:     { type: ["string", "null"] }
+        price:           { type: number }
+        netPrice:        { type: ["number", "null"] }
+        vatRate:         { type: number }
+        durationMinutes: { type: integer }
+        createdAt:       { type: string }
+
+    ServiceInput:
+      type: object
+      required: [name, durationMinutes]
+      properties:
+        name:            { type: string }
+        description:     { type: string }
+        price:           { type: number }
+        netPrice:        { type: number }
+        vatRate:         { type: number }
+        durationMinutes: { type: integer }
+
+    ServiceUpdate:
+      type: object
+      properties:
+        name:            { type: string }
+        description:     { type: string }
+        price:           { type: number }
+        netPrice:        { type: number }
+        vatRate:         { type: number }
+        durationMinutes: { type: integer }
+
+    ServiceTemplate:
+      type: object
+      required: [id, categorySlug, name, defaultDurationMinutes]
+      properties:
+        id:                     { type: integer }
+        categorySlug:           { type: string }
+        groupName:              { type: ["string", "null"] }
+        name:                   { type: string }
+        description:            { type: ["string", "null"] }
+        priceType:              { type: ["string", "null"], enum: [fix, hr, pa, hoai, on, null] }
+        referencePrice:         { type: ["string", "null"] }
+        durationLabel:          { type: ["string", "null"] }
+        defaultDurationMinutes: { type: integer }
+        defaultPrice:           { type: ["number", "null"] }
+        priceMin:               { type: ["number", "null"] }
+        priceAvg:               { type: ["number", "null"] }
+        priceMax:               { type: ["number", "null"] }
+        unit:                   { type: ["string", "null"] }
+        inputs:                 { type: ["array", "null"], items: { type: string } }
+        fundable:               { type: ["string", "null"] }
+        notes:                  { type: ["string", "null"] }
+        sortOrder:              { type: integer }
+
+    UploadUrlRequest:
+      type: object
+      required: [name, contentType]
+      properties:
+        name:        { type: string }
+        size:        { type: integer }
+        contentType: { type: string }
+
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:  { type: string }
+        objectPath: { type: string }
+
+    TimeSlot:
+      type: object
+      required: [id, providerId, startTime, endTime, isAvailable]
+      properties:
+        id:          { type: integer }
+        providerId:  { type: integer }
+        startTime:   { type: string, format: date-time }
+        endTime:     { type: string, format: date-time }
+        isAvailable: { type: boolean }
+
+    TimeSlotInput:
+      type: object
+      required: [providerId, startTime, endTime]
+      properties:
+        providerId:  { type: integer }
+        startTime:   { type: string, format: date-time }
+        endTime:     { type: string, format: date-time }
+
+    Booking:
+      type: object
+      required: [id, customerId, providerId, serviceId, slotId, status, totalPrice, scheduledAt]
+      properties:
+        id:           { type: integer }
+        customerId:   { type: string }
+        customerName: { type: ["string", "null"] }
+        providerId:   { type: integer }
+        providerName: { type: string }
+        serviceId:    { type: integer }
+        serviceName:  { type: string }
+        slotId:       { type: integer }
+        status:       { type: string, enum: [pending, confirmed, cancelled, completed] }
+        totalPrice:   { type: number }
+        scheduledAt:  { type: string, format: date-time }
+        notes:        { type: ["string", "null"] }
+        paymentRequired: { type: boolean }
+        paymentStatus:   { type: string, enum: [not_required, pending, paid, failed, refunded] }
+        stripeCheckoutSessionId: { type: ["string", "null"] }
+        assessmentId:    { type: ["integer", "null"] }
+        assessmentLabel: { type: ["string", "null"] }
+        createdAt:    { type: string }
+
+    IcalBookingConflict:
+      type: object
+      required: [id, providerId, bookingId, bookingScheduledAt, externalStart, externalEnd, detectedAt]
+      properties:
+        id:                  { type: integer }
+        providerId:          { type: integer }
+        bookingId:           { type: integer }
+        bookingScheduledAt:  { type: string, format: date-time }
+        bookingCustomerName: { type: ["string", "null"] }
+        bookingServiceName:  { type: ["string", "null"] }
+        externalStart:       { type: string, format: date-time }
+        externalEnd:         { type: string, format: date-time }
+        externalUid:         { type: ["string", "null"] }
+        externalSummary:     { type: ["string", "null"] }
+        detectedAt:          { type: string, format: date-time }
+
+    BookingInput:
+      type: object
+      required: [providerId, serviceId, slotId]
+      properties:
+        providerId:    { type: integer }
+        serviceId:     { type: integer }
+        slotId:        { type: integer }
+        notes:         { type: string }
+        assessmentId:  { type: ["integer", "null"] }
+
+    BookingStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [confirmed, cancelled, completed] }
+
+    Review:
+      type: object
+      required: [id, bookingId, customerId, providerId, rating, createdAt]
+      properties:
+        id:           { type: integer }
+        bookingId:    { type: integer }
+        customerId:   { type: string }
+        customerName: { type: ["string", "null"] }
+        providerId:   { type: integer }
+        rating:       { type: integer }
+        comment:      { type: ["string", "null"] }
+        createdAt:    { type: string }
+
+    ReviewInput:
+      type: object
+      required: [bookingId, rating]
+      properties:
+        bookingId:  { type: integer }
+        rating:     { type: integer }
+        comment:    { type: string }
+
+    AiOfferRequest:
+      type: object
+      required: [providerId, inquiry]
+      properties:
+        providerId: { type: integer }
+        inquiry:    { type: string }
+
+    AiOfferResponse:
+      type: object
+      required: [offer]
+      properties:
+        offer:       { type: string }
+        estimatedPrice: { type: ["number", "null"] }
+        estimatedDuration: { type: ["string", "null"] }
+
+    BeraterProfiltextRequest:
+      type: object
+      required: [displayName, city]
+      properties:
+        displayName:      { type: string, minLength: 2 }
+        city:             { type: string, minLength: 2 }
+        yearsExperience:  { type: integer, minimum: 0, maximum: 60 }
+        specialties:      { type: array, items: { type: string }, maxItems: 20 }
+        certificates:     { type: array, items: { type: string }, maxItems: 20 }
+        consultationMode: { type: string, enum: [online, in-person, both] }
+        notes:            { type: string, maxLength: 1000 }
+
+    BeraterProfiltextResponse:
+      type: object
+      required: [bio]
+      properties:
+        bio: { type: string }
+
+    ProviderDashboard:
+      type: object
+      required: [totalBookings, pendingBookings, confirmedBookings, completedBookings, totalRevenue, averageRating, recentBookings]
+      properties:
+        totalBookings:     { type: integer }
+        pendingBookings:   { type: integer }
+        confirmedBookings: { type: integer }
+        completedBookings: { type: integer }
+        totalRevenue:      { type: number }
+        averageRating:     { type: number }
+        recentBookings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Booking"
+
+    CheckoutSession:
+      type: object
+      required: [url]
+      properties:
+        url:       { type: string }
+        sessionId: { type: string }
+
+    ConnectStatus:
+      type: object
+      required: [hasAccount, onboarded, chargesEnabled, payoutsEnabled, detailsSubmitted]
+      properties:
+        hasAccount:       { type: boolean }
+        onboarded:        { type: boolean }
+        chargesEnabled:   { type: boolean }
+        payoutsEnabled:   { type: boolean }
+        detailsSubmitted: { type: boolean }
+
+    ConnectOnboardingLink:
+      type: object
+      required: [url]
+      properties:
+        url: { type: string }
+
+    SubscriptionStatus:
+      type: object
+      required: [tier]
+      properties:
+        tier: { type: string, enum: [basic, premium] }
+        status: { type: ["string", "null"] }
+        currentPeriodEnd: { type: ["string", "null"] }
+        cancelAtPeriodEnd: { type: boolean }
+        priceEur: { type: number }
+        world: { type: string, enum: [pro, alltag] }
+
+    PlatformStats:
+      type: object
+      required: [totalProviders, totalBookings, totalCategories, totalReviews]
+      properties:
+        totalProviders:   { type: integer }
+        totalBookings:    { type: integer }
+        totalCategories:  { type: integer }
+        totalReviews:     { type: integer }
+
+    AssessmentInput:
+      type: object
+      required: [label, inputJson, resultJson]
+      properties:
+        label:
+          type: string
+          minLength: 1
+          maxLength: 200
+        addressJson:
+          type: ["object", "null"]
+          additionalProperties: true
+        inputJson:
+          type: object
+          additionalProperties: true
+        resultJson:
+          type: object
+          additionalProperties: true
+        providerId:
+          type: ["integer", "null"]
+
+    Assessment:
+      type: object
+      required: [id, userId, label, inputJson, resultJson, createdAt, updatedAt]
+      properties:
+        id:           { type: integer }
+        userId:       { type: string }
+        providerId:   { type: ["integer", "null"] }
+        label:        { type: string }
+        addressJson:
+          type: ["object", "null"]
+          additionalProperties: true
+        inputJson:
+          type: object
+          additionalProperties: true
+        resultJson:
+          type: object
+          additionalProperties: true
+        createdAt:    { type: string, format: date-time }
+        updatedAt:    { type: string, format: date-time }
+
+    GebaeudecheckPackage:
+      type: object
+      required: [id, credits, amountCents, label]
+      properties:
+        id:         { type: string }
+        credits:    { type: integer }
+        amountCents: { type: integer }
+        label:      { type: string }
+
+    GebaeudecheckCredits:
+      type: object
+      required: [balance, packages]
+      properties:
+        balance: { type: integer }
+        packages:
+          type: array
+          items:
+            $ref: "#/components/schemas/GebaeudecheckPackage"
+
+    GebaeudecheckCheckoutInput:
+      type: object
+      required: [packageId]
+      properties:
+        packageId: { type: string }
+
+    GebaeudecheckReconcileInput:
+      type: object
+      required: [sessionId]
+      properties:
+        sessionId: { type: string }
+
+    GebaeudecheckReconcileResult:
+      type: object
+      required: [granted, balance]
+      properties:
+        granted: { type: boolean }
+        balance: { type: integer }
+
+    OfferItem:
+      type: object
+      required: [name, durationMinutes, netPrice, vatRate, grossPrice]
+      properties:
+        serviceId:       { type: ["integer", "null"] }
+        name:            { type: string }
+        durationMinutes: { type: integer }
+        netPrice:        { type: number }
+        vatRate:         { type: number }
+        grossPrice:      { type: number }
+
+    AcceptOfferInput:
+      type: object
+      required: [providerId, items, agbVersion]
+      properties:
+        providerId: { type: integer }
+        inquiry:    { type: ["string", "null"] }
+        offerText:  { type: ["string", "null"] }
+        agbVersion: { type: string }
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/OfferItem"
+
+    OfferAcceptance:
+      type: object
+      required: [id, userId, providerId, items, totalNet, totalGross, agbVersion, status, createdAt]
+      properties:
+        id:         { type: integer }
+        userId:     { type: string }
+        providerId: { type: ["integer", "null"] }
+        inquiry:    { type: ["string", "null"] }
+        offerText:  { type: ["string", "null"] }
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OfferItem"
+        totalNet:   { type: number }
+        totalGross: { type: number }
+        agbVersion: { type: string }
+        status:     { type: string }
+        createdAt:  { type: string, format: date-time }
+
+    RequestInput:
+      type: object
+      required: [customerName, customerEmail, categorySlug, title, consentDataShare]
+      properties:
+        customerName:  { type: string, minLength: 1, maxLength: 200 }
+        customerEmail: { type: string, minLength: 3, maxLength: 200 }
+        customerPhone: { type: ["string", "null"] }
+        categorySlug:  { type: string, minLength: 1 }
+        serviceTemplateId: { type: ["integer", "null"] }
+        title:       { type: string, minLength: 1, maxLength: 200 }
+        description: { type: ["string", "null"] }
+        answers:
+          type: ["object", "null"]
+          additionalProperties: true
+        postalCode: { type: ["string", "null"] }
+        city:       { type: ["string", "null"] }
+        budgetMinCents: { type: ["integer", "null"] }
+        budgetMaxCents: { type: ["integer", "null"] }
+        urgency: { type: string, enum: [sofort, zwei_wochen, flexibel] }
+        fundingRelevant: { type: boolean }
+        maxOffers: { type: integer, minimum: 1, maximum: 10 }
+        consentDataShare:
+          description: >-
+            DSGVO: ausdrückliche, freiwillige Einwilligung, die Anfrage an
+            passende Anbieter weiterzugeben. Nur ein literal `true` zählt; der
+            Zeitstempel wird serverseitig festgehalten.
+          type: boolean
+
+    RfqRequest:
+      type: object
+      required: [id, customerName, customerEmail, categorySlug, title, urgency, fundingRelevant, maxOffers, status, createdAt]
+      properties:
+        id:            { type: integer }
+        customerId:    { type: ["string", "null"] }
+        customerName:  { type: string }
+        customerEmail: { type: string }
+        customerPhone: { type: ["string", "null"] }
+        categorySlug:  { type: string }
+        serviceTemplateId: { type: ["integer", "null"] }
+        title:       { type: string }
+        description: { type: ["string", "null"] }
+        answers:
+          type: ["object", "null"]
+          additionalProperties: true
+        postalCode: { type: ["string", "null"] }
+        city:       { type: ["string", "null"] }
+        budgetMinCents: { type: ["integer", "null"] }
+        budgetMaxCents: { type: ["integer", "null"] }
+        urgency: { type: string }
+        fundingRelevant: { type: boolean }
+        maxOffers: { type: integer }
+        status:    { type: string }
+        createdAt: { type: string, format: date-time }
+
+    CreateRequestResult:
+      type: object
+      required: [request, accessToken, matchedProviders]
+      properties:
+        request: { $ref: "#/components/schemas/RfqRequest" }
+        accessToken:
+          description: One-time bearer token for guest access to this request's offers (only returned here).
+          type: string
+        matchedProviders: { type: integer }
+
+    RequestAccessInput:
+      type: object
+      required: [requestId]
+      properties:
+        requestId: { type: integer }
+        token:
+          description: Guest access token (omit when the owning customer is logged in).
+          type: ["string", "null"]
+
+    RequestWithOffers:
+      type: object
+      required: [request, offers]
+      properties:
+        request: { $ref: "#/components/schemas/RfqRequest" }
+        offers:
+          type: array
+          items:
+            $ref: "#/components/schemas/RfqOfferWithProvider"
+
+    AcceptRequestOfferInput:
+      type: object
+      properties:
+        token:
+          description: Guest access token (omit when the owning customer is logged in).
+          type: ["string", "null"]
+
+    RfqRequestForProvider:
+      type: object
+      required: [id, categorySlug, title, urgency, fundingRelevant, status, contactUnlocked, hasOffered, estimatedLeadPriceCents, createdAt]
+      properties:
+        id:           { type: integer }
+        categorySlug: { type: string }
+        serviceTemplateId: { type: ["integer", "null"] }
+        title:       { type: string }
+        description: { type: ["string", "null"] }
+        answers:
+          type: ["object", "null"]
+          additionalProperties: true
+        postalCode: { type: ["string", "null"] }
+        city:       { type: ["string", "null"] }
+        budgetMinCents: { type: ["integer", "null"] }
+        budgetMaxCents: { type: ["integer", "null"] }
+        urgency: { type: string }
+        fundingRelevant: { type: boolean }
+        status:  { type: string }
+        contactUnlocked: { type: boolean }
+        hasOffered: { type: boolean }
+        estimatedLeadPriceCents:
+          description: The lead fee this provider would pay to send an offer (after their tier discount).
+          type: integer
+        leadFeeId: { type: ["integer", "null"] }
+        offerCount: { type: integer }
+        customerName:  { type: ["string", "null"] }
+        customerEmail: { type: ["string", "null"] }
+        customerPhone: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    ProviderOfferInput:
+      type: object
+      required: [priceCents]
+      properties:
+        priceCents: { type: integer, minimum: 0 }
+        priceType: { type: string, enum: [fixed, hourly, estimate] }
+        message: { type: ["string", "null"] }
+        availableFrom: { type: ["string", "null"] }
+        estimatedDuration: { type: ["string", "null"] }
+
+    RfqOffer:
+      type: object
+      required: [id, requestId, providerId, priceCents, priceType, status, createdAt]
+      properties:
+        id:         { type: integer }
+        requestId:  { type: integer }
+        providerId: { type: integer }
+        leadFeeId:  { type: ["integer", "null"] }
+        priceCents: { type: integer }
+        priceType:  { type: string }
+        message:    { type: ["string", "null"] }
+        availableFrom: { type: ["string", "null"] }
+        estimatedDuration: { type: ["string", "null"] }
+        status:     { type: string }
+        viewedAt:    { type: ["string", "null"], format: date-time }
+        respondedAt: { type: ["string", "null"], format: date-time }
+        createdAt:   { type: string, format: date-time }
+
+    RfqProviderSummary:
+      type: object
+      required: [id, displayName]
+      properties:
+        id:          { type: integer }
+        displayName: { type: string }
+        category:    { type: ["string", "null"] }
+        city:        { type: ["string", "null"] }
+        rating:      { type: number }
+        reviewCount: { type: integer }
+        verified:    { type: boolean }
+        subscriptionTier: { type: ["string", "null"] }
+        avatarUrl:   { type: ["string", "null"] }
+
+    RfqOfferWithProvider:
+      type: object
+      required: [id, requestId, providerId, priceCents, priceType, status, createdAt, provider]
+      properties:
+        id:         { type: integer }
+        requestId:  { type: integer }
+        providerId: { type: integer }
+        priceCents: { type: integer }
+        priceType:  { type: string }
+        message:    { type: ["string", "null"] }
+        availableFrom: { type: ["string", "null"] }
+        estimatedDuration: { type: ["string", "null"] }
+        status:     { type: string }
+        createdAt:  { type: string, format: date-time }
+        provider:   { $ref: "#/components/schemas/RfqProviderSummary" }
+
+    CreateOfferResult:
+      type: object
+      required: [offer, leadFeeCents, basePriceCents, freeLeadUsed, freeLeadsRemaining, tier, walletBalanceCents]
+      properties:
+        offer: { $ref: "#/components/schemas/RfqOffer" }
+        leadFeeCents:  { type: integer }
+        basePriceCents: { type: integer }
+        freeLeadUsed:
+          description: True when this lead was paid from a free-lead grant (leadFeeCents is then 0).
+          type: boolean
+        freeLeadsRemaining:
+          description: Free leads the provider can still use after this offer.
+          type: integer
+        tier: { type: string }
+        walletBalanceCents: { type: integer }
+
+    LeadEntitlements:
+      type: object
+      required: [tier, leadsUsed, leadDiscountPct, rankingBoost, freeLeadsRemaining]
+      properties:
+        tier: { type: string, enum: [basic, premium] }
+        maxLeadsMonth:
+          description: Monthly lead cap; null = unlimited (premium).
+          type: ["integer", "null"]
+        leadsUsed: { type: integer }
+        leadDiscountPct: { type: number }
+        rankingBoost: { type: number }
+        freeLeadsRemaining:
+          description: Free leads (grants) the provider can still use right now.
+          type: integer
+
+    WalletTransactionDto:
+      type: object
+      required: [id, type, amountCents, balanceAfterCents, createdAt]
+      properties:
+        id:   { type: integer }
+        type: { type: string }
+        amountCents: { type: integer }
+        balanceAfterCents: { type: integer }
+        referenceId: { type: ["integer", "null"] }
+        note: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    WalletStatus:
+      type: object
+      required: [balanceCents, currency, entitlements, transactions]
+      properties:
+        balanceCents: { type: integer }
+        currency: { type: string }
+        entitlements: { $ref: "#/components/schemas/LeadEntitlements" }
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/WalletTransactionDto"
+
+    WalletTopupInput:
+      type: object
+      required: [amountCents]
+      properties:
+        amountCents: { type: integer, minimum: 500, maximum: 100000 }
+
+    LeadRefundInput:
+      type: object
+      properties:
+        reason: { type: ["string", "null"] }
+
+    LeadRefundResult:
+      type: object
+      required: [ok, refundedCents, balanceCents]
+      properties:
+        ok: { type: boolean }
+        refundedCents: { type: integer }
+        balanceCents: { type: integer }
+
+    ImmobilienKundeInput:
+      type: object
+      required: [typ, firma]
+      properties:
+        typ:
+          type: string
+          enum: [privat, hausverwaltung, makler, bestandshalter, bautraeger, genossenschaft, handwerker, gewerbe]
+        firma:           { type: string, minLength: 1 }
+        ansprechpartner: { type: ["string", "null"] }
+        telefon:         { type: ["string", "null"] }
+        email:           { type: ["string", "null"] }
+        anzahlGebaeude:      { type: ["integer", "null"] }
+        wohneinheitenGesamt: { type: ["integer", "null"] }
+
+    ImmobilienKunde:
+      type: object
+      required: [userId, typ, firma, createdAt, updatedAt]
+      properties:
+        userId:          { type: string }
+        typ:
+          type: string
+          enum: [privat, hausverwaltung, makler, bestandshalter, bautraeger, genossenschaft, handwerker, gewerbe]
+        firma:           { type: string }
+        ansprechpartner: { type: ["string", "null"] }
+        telefon:         { type: ["string", "null"] }
+        email:           { type: ["string", "null"] }
+        anzahlGebaeude:      { type: ["integer", "null"] }
+        wohneinheitenGesamt: { type: ["integer", "null"] }
+        createdAt:       { type: string, format: date-time }
+        updatedAt:       { type: string, format: date-time }
+
+    ImmobilienPortfolioObjektInput:
+      type: object
+      required: [bezeichnung]
+      properties:
+        bezeichnung:   { type: string, minLength: 1 }
+        strasse:       { type: ["string", "null"] }
+        hausnummer:    { type: ["string", "null"] }
+        plz:           { type: ["string", "null"] }
+        ort:           { type: ["string", "null"] }
+        gebaeudetyp:   { type: ["string", "null"] }
+        baujahr:       { type: ["integer", "null"] }
+        wohnflaeche:   { type: ["integer", "null"] }
+        wohneinheiten: { type: ["integer", "null"] }
+        heizung:       { type: ["string", "null"] }
+        notiz:         { type: ["string", "null"] }
+
+    ImmobilienPortfolioObjekt:
+      type: object
+      required: [id, userId, bezeichnung, createdAt, updatedAt]
+      properties:
+        id:            { type: integer }
+        userId:        { type: string }
+        bezeichnung:   { type: string }
+        strasse:       { type: ["string", "null"] }
+        hausnummer:    { type: ["string", "null"] }
+        plz:           { type: ["string", "null"] }
+        ort:           { type: ["string", "null"] }
+        gebaeudetyp:   { type: ["string", "null"] }
+        baujahr:       { type: ["integer", "null"] }
+        wohnflaeche:   { type: ["integer", "null"] }
+        wohneinheiten: { type: ["integer", "null"] }
+        heizung:       { type: ["string", "null"] }
+        notiz:         { type: ["string", "null"] }
+        createdAt:     { type: string, format: date-time }
+        updatedAt:     { type: string, format: date-time }
+
+    VerwalteterKundeInput:
+      type: object
+      required: [name]
+      properties:
+        name:              { type: string, minLength: 1 }
+        typ:               { type: ["string", "null"] }
+        ansprechpartner:   { type: ["string", "null"] }
+        telefon:           { type: ["string", "null"] }
+        email:             { type: ["string", "null"] }
+        notiz:             { type: ["string", "null"] }
+        portfolioObjektId: { type: ["integer", "null"] }
+
+    VerwalteterKunde:
+      type: object
+      required: [id, userId, name, createdAt, updatedAt]
+      properties:
+        id:                { type: integer }
+        userId:            { type: string }
+        name:              { type: string }
+        typ:               { type: ["string", "null"] }
+        ansprechpartner:   { type: ["string", "null"] }
+        telefon:           { type: ["string", "null"] }
+        email:             { type: ["string", "null"] }
+        notiz:             { type: ["string", "null"] }
+        portfolioObjektId: { type: ["integer", "null"] }
+        createdAt:         { type: string, format: date-time }
+        updatedAt:         { type: string, format: date-time }
+
+    CustomerProfileInput:
+      type: object
+      required: [strasse, hausnummer, plz, ort]
+      properties:
+        strasse:    { type: string, minLength: 1 }
+        hausnummer: { type: string, minLength: 1 }
+        plz:        { type: string, minLength: 1 }
+        ort:        { type: string, minLength: 1 }
+        interessen:
+          type: array
+          maxItems: 3
+          items: { type: string }
+        quelle:     { type: ["string", "null"] }
+
+    CustomerProfile:
+      type: object
+      required: [userId, strasse, hausnummer, plz, ort, interessen, createdAt, updatedAt]
+      properties:
+        userId:     { type: string }
+        strasse:    { type: string }
+        hausnummer: { type: string }
+        plz:        { type: string }
+        ort:        { type: string }
+        interessen:
+          type: array
+          items: { type: string }
+        quelle:     { type: ["string", "null"] }
+        createdAt:  { type: string, format: date-time }
+        updatedAt:  { type: string, format: date-time }
+
+    InvoiceSettings:
+      type: object
+      required: [kleinunternehmer, vatRate, nextInvoiceNumber, autoIssueInvoices]
+      properties:
+        kleinunternehmer:    { type: boolean }
+        vatRate:             { type: string, description: "Numeric percentage as string (e.g. '19.00')" }
+        invoicePrefix:       { type: ["string", "null"] }
+        nextInvoiceNumber:   { type: integer }
+        iban:                { type: ["string", "null"] }
+        invoiceFooter:       { type: ["string", "null"] }
+        autoIssueInvoices:   { type: boolean }
+        companyLegalName:    { type: ["string", "null"] }
+        taxId:               { type: ["string", "null"] }
+        address:             { type: ["string", "null"] }
+        zip:                 { type: ["string", "null"] }
+        city:                { type: ["string", "null"] }
+
+    InvoiceSettingsUpdate:
+      type: object
+      properties:
+        kleinunternehmer:    { type: boolean }
+        vatRate:             { type: string }
+        invoicePrefix:       { type: ["string", "null"] }
+        iban:                { type: ["string", "null"] }
+        invoiceFooter:       { type: ["string", "null"] }
+        autoIssueInvoices:   { type: boolean }
+        companyLegalName:    { type: ["string", "null"] }
+        taxId:               { type: ["string", "null"] }
+        address:             { type: ["string", "null"] }
+
+    Invoice:
+      type: object
+      required: [id, providerId, bookingId, invoiceNumber, kind, issuedAt, netCents, taxRate, taxCents, totalCents, currency, serviceName, status]
+      properties:
+        id:                  { type: integer }
+        providerId:          { type: integer }
+        bookingId:           { type: integer }
+        invoiceNumber:       { type: string }
+        kind:                { type: string, enum: [invoice, storno] }
+        originalInvoiceId:   { type: ["integer", "null"] }
+        issuedAt:            { type: string, format: date-time }
+        netCents:            { type: integer }
+        taxRate:             { type: string }
+        taxCents:            { type: integer }
+        totalCents:          { type: integer }
+        currency:            { type: string }
+        customerName:        { type: ["string", "null"] }
+        customerEmail:       { type: ["string", "null"] }
+        customerAddress:     { type: ["string", "null"] }
+        serviceName:         { type: string }
+        serviceDescription:  { type: ["string", "null"] }
+        status:              { type: string }
+        hasPdf:              { type: boolean }
+
+    FoerderProgramm:
+      type: object
+      required: [id, titel, foerdergeber, ebene, art, foerderquoteText, maxBetragText, kurzbeschreibung, tags, region, aktiv]
+      properties:
+        id:               { type: string }
+        titel:            { type: string }
+        foerdergeber:     { type: string }
+        ebene:            { type: string }
+        art:              { type: string }
+        timing:           { type: string }
+        foerderquoteText: { type: string }
+        quoteMax:         { type: ["integer", "null"] }
+        maxBetragText:    { type: string }
+        maxBetragEur:     { type: ["integer", "null"] }
+        kurzbeschreibung: { type: string }
+        besonderheit:     { type: ["string", "null"] }
+        quelleUrl:        { type: ["string", "null"] }
+        erfolgsquote:     { type: ["integer", "null"] }
+        tags:
+          type: array
+          items: { type: string }
+        region:           { type: string }
+        aktiv:            { type: boolean }
+
+    FoerderMatchInput:
+      type: object
+      required: [baujahr, wohnflaeche, heizung]
+      properties:
+        baujahr:     { type: integer }
+        wohnflaeche: { type: number }
+        wohneinheiten: { type: ["integer", "null"] }
+        heizung:     { type: string, description: "Heating system key e.g. gas, oel, waermepumpe, fernwaerme, pellet" }
+        massnahmen:
+          type: array
+          description: "Selected measure tags the owner is interested in (heizung, daemmung, fenster, pv, komplett)"
+          items: { type: string }
+        selbstgenutzt: { type: ["boolean", "null"] }
+
+    MassnahmeEstimate:
+      type: object
+      required: [id, label, art, kostenMin, kostenMax, einsparung, beschreibung]
+      properties:
+        id:          { type: string }
+        label:       { type: string }
+        art:         { type: string, enum: [einzelmassnahme, komplettsanierung] }
+        kostenMin:   { type: integer }
+        kostenMax:   { type: integer }
+        einsparung:  { type: string }
+        beschreibung: { type: string }
+        tags:
+          type: array
+          items: { type: string }
+
+    FoerderMatchResult:
+      type: object
+      required: [programme, massnahmen, geschaetzteFoerderungEur]
+      properties:
+        programme:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderProgramm"
+        massnahmen:
+          type: array
+          items:
+            $ref: "#/components/schemas/MassnahmeEstimate"
+        geschaetzteFoerderungEur: { type: integer }
+
+    ReportCheckoutInput:
+      type: object
+      required: [profil]
+      properties:
+        adresse: { type: ["string", "null"] }
+        profil:
+          type: object
+          additionalProperties: true
+        kontakt:
+          description: >-
+            Optionale Personalien des Käufers (für Registrierung / Zuordnung des
+            Reports). Alle Felder optional; die E-Mail wird im Stripe-Checkout
+            vorausgefüllt.
+          type: object
+          properties:
+            vorname:   { type: string }
+            nachname:  { type: string }
+            email:     { type: string }
+            telefon:   { type: string }
+            anschrift: { type: string }
+        financeConsent:
+          description: >-
+            Förder-Affiliate: separate, freiwillige Einwilligung des Käufers,
+            unverbindliche Finanzierungsangebote passender Finanzierungspartner
+            zu erhalten. Nur ein literal `true` zählt als Einwilligung. Der
+            Nachweis (Version + Wortlaut + Zeitstempel) wird serverseitig
+            festgehalten — Client-Werte werden nicht akzeptiert.
+          type: boolean
+
+    FoerderschieneReport:
+      type: object
+      required: [id, status, amountCents, profil, createdAt]
+      properties:
+        id:          { type: integer }
+        userId:      { type: ["string", "null"] }
+        sessionId:   { type: ["string", "null"] }
+        email:       { type: ["string", "null"] }
+        status:      { type: string }
+        amountCents: { type: integer }
+        adresse:     { type: ["string", "null"] }
+        profil:
+          type: object
+          additionalProperties: true
+        createdAt:   { type: string, format: date-time }
+        paidAt:      { type: ["string", "null"], format: date-time }
+
+    EnergieausweisOrderInput:
+      type: object
+      required: [ausweisTyp, kontaktName, kontaktEmail, intake]
+      properties:
+        ausweisTyp:   { type: string, enum: [bedarf, verbrauch] }
+        kontaktName:  { type: string, minLength: 1 }
+        kontaktEmail: { type: string, minLength: 3 }
+        intake:
+          type: object
+          additionalProperties: true
+
+    EnergieausweisOrder:
+      type: object
+      required: [id, userId, ausweisTyp, status, amountCents, kontaktName, kontaktEmail, intake, createdAt]
+      properties:
+        id:           { type: integer }
+        userId:       { type: string }
+        sessionId:    { type: ["string", "null"] }
+        ausweisTyp:   { type: string }
+        status:       { type: string }
+        amountCents:  { type: integer }
+        kontaktName:  { type: string }
+        kontaktEmail: { type: string }
+        intake:
+          type: object
+          additionalProperties: true
+        createdAt:    { type: string, format: date-time }
+        paidAt:       { type: ["string", "null"], format: date-time }
