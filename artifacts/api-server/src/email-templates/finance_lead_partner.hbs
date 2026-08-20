@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neue Finanzierungsanfrage</title>
+</head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background-color:#F5F2E8;-webkit-font-smoothing:antialiased;color:#13243D;">
+
+<div style="display:none;max-height:0;overflow:hidden;color:transparent;">Neue Finanzierungsanfrage aus der Förderschiene</div>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F5F2E8;padding:24px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#FBFAF5;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.06);">
+
+        <tr>
+          <td style="background:linear-gradient(135deg,#0E1B2E 0%,#13243D 100%);padding:20px 32px;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tr>
+                <td>
+                  <span style="font-family:Georgia,serif;font-size:24px;font-weight:700;color:#FFFFFF;letter-spacing:-0.5px;">Förderschiene</span>
+                </td>
+                <td align="right" style="vertical-align:middle;">
+                  <span style="font-size:10px;color:#E9B872;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;">FINANZIERUNGS-LEAD</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background:linear-gradient(90deg,#13243D 0%,#D98324 60%,#E9B872 100%);height:3px;line-height:3px;">&nbsp;</td>
+        </tr>
+
+        <tr>
+          <td style="padding:32px 32px 28px;">
+
+            <h1 style="font-family:Georgia,serif;font-size:25px;color:#13243D;line-height:1.2;margin:0 0 16px;font-weight:700;letter-spacing:-0.5px;">Neue Finanzierungsanfrage</h1>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 16px;">Hallo {{partnerName}},</p>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:0 0 20px;">ein Eigentümer hat über die Förderschiene einen Gebäudereport gekauft und ausdrücklich zugestimmt, unverbindliche Finanzierungsangebote zu erhalten. Hier sind die Eckdaten:</p>
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#FFFFFF;border:1px solid #ECE6D6;border-radius:10px;margin:0 0 20px;">
+              <tr>
+                <td style="padding:20px 24px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:14px;line-height:1.7;color:#13243D;">
+                    <tr>
+                      <td style="color:#6B6450;width:180px;">Kontakt Eigentümer</td>
+                      <td style="font-weight:600;">{{buyerEmail}}</td>
+                    </tr>
+                    <tr>
+                      <td style="color:#6B6450;">Objektadresse</td>
+                      <td style="font-weight:600;">{{adresse}}</td>
+                    </tr>
+                    <tr>
+                      <td style="color:#6B6450;">PLZ</td>
+                      <td style="font-weight:600;">{{postalCode}}</td>
+                    </tr>
+                    <tr>
+                      <td style="color:#6B6450;">Geschätztes Investitionsvolumen</td>
+                      <td style="font-weight:600;">{{investitionEur}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#B96A12;letter-spacing:1.2px;text-transform:uppercase;">Empfohlene Maßnahmen</p>
+            <p style="font-size:14px;line-height:1.7;color:#1F2D44;margin:0 0 20px;">{{massnahmenListe}}</p>
+
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#FDF6EC;border-left:3px solid #D98324;border-radius:6px;margin:8px 0 4px;">
+              <tr>
+                <td style="padding:14px 18px;">
+                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#B96A12;letter-spacing:1.2px;text-transform:uppercase;">Einwilligung liegt vor</p>
+                  <p style="margin:0;font-size:13px;color:#13243D;line-height:1.5;">Der Eigentümer hat der Weitergabe seiner Daten zum Erhalt unverbindlicher Finanzierungsangebote zugestimmt. Bitte kontaktieren Sie ihn zeitnah und ausschließlich zu diesem Zweck.</p>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size:15px;line-height:1.65;color:#1F2D44;margin:24px 0 0;">Viele Grüße,<br><strong>Ihr Förderschiene-Team</strong></p>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#0E1B2E;color:#94A3B8;padding:24px 32px;font-size:11px;line-height:1.6;">
+            <p style="margin:0 0 8px;color:#E9B872;font-weight:600;">Förderschiene — Gebäudecheck &amp; Förderung</p>
+            <p style="margin:0 0 12px;">Klard GmbH · Kurfürstendamm 193E · 10707 Berlin</p>
+            <p style="margin:12px 0 0;color:#475569;font-size:10px;">
+              Sie erhalten diese E-Mail als registrierter Finanzpartner der Förderschiene.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+      <p style="margin:16px 0 0;font-size:11px;color:#8B8676;">
+        Diese E-Mail wurde automatisch generiert.
+      </p>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
