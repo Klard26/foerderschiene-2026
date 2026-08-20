@@ -1,0 +1,2530 @@
+{
+  "$schema": "https://klard.de/schemas/leistungskatalog/v2",
+  "version": "2.0.0",
+  "generated_at": "2026-06-14",
+  "language": "de",
+  "country": "DE",
+  "description": "Klard Detailkatalog Bau- & Energiebranche v2.0 — mit Preisempfehlungen (Min/Avg/Max), Berechnungseinheiten, erforderlichen Eingaben für dynamische Preisberechnung und Förderfähigkeits-Hinweisen. 8 Berufsgruppen, alle Leistungen für die Anbieter-Registrierung auf der Klard-Plattform vorausgefüllt.",
+  "totals": {
+    "branches": 8,
+    "categories": 29,
+    "services": 153
+  },
+  "price_types": {
+    "fix": {
+      "label": "Festpreis",
+      "description": "Verbindlicher Einmal-Preis"
+    },
+    "hr": {
+      "label": "Stundensatz",
+      "description": "Abrechnung nach Aufwand pro Stunde"
+    },
+    "pa": {
+      "label": "Pauschalpreis",
+      "description": "Komplexe Projektleistungen mit Gesamtpreis"
+    },
+    "hoai": {
+      "label": "HOAI",
+      "description": "Honorierung nach HOAI (Prozent der Bausumme)"
+    },
+    "on": {
+      "label": "Auf Anfrage",
+      "description": "Preis individuell, je nach Umfang"
+    }
+  },
+  "units": {
+    "objekt": "pro Objekt/Auftrag",
+    "stunde": "pro Stunde",
+    "tag": "pro Tag",
+    "termin": "pro Vor-Ort-Termin",
+    "antrag": "pro Antrag",
+    "position": "pro Einzelposition",
+    "view": "pro Visualisierung",
+    "schnitt": "pro Schnitt",
+    "messreihe": "pro Messreihe",
+    "lv": "pro Leistungsverzeichnis",
+    "vertrag": "pro Vertrag",
+    "bausumme_prozent": "Prozent der Bausumme (HOAI)"
+  },
+  "branches": [
+    {
+      "id": "enb",
+      "name": "Energieberatung",
+      "icon": "⚡",
+      "description": "Qualifizierte Energieberatung nach BAFA/KfW-Standards",
+      "color": "#D97706",
+      "color_light": "#FEF3C7",
+      "requires_dena": true,
+      "display_order": 1,
+      "service_categories": [
+        {
+          "name": "BAFA-Beratungsprogramme",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "BAFA-Energieberatung Wohngebäude (EBW)",
+              "price_type": "fix",
+              "duration": "ca. 1–2 Tage",
+              "p_min": 1200,
+              "p_avg": 1700,
+              "p_max": 2400,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "wohnflaeche_qm"
+              ],
+              "fundable": "BAFA EBW 50% (max. 850 € EFH, 1.700 € MFH)",
+              "notes": "Für Privatkunden und WEG bis 25 WE. 50% BAFA-Förderung direkt verrechenbar."
+            },
+            {
+              "name": "BAFA-Energieberatung Nichtwohngebäude (EBN)",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 2500,
+              "p_avg": 4500,
+              "p_max": 8500,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "gebaeudetyp"
+              ],
+              "fundable": "BAFA EBN 80% (max. 6.000 € KMU, 8.000 € sonstige)",
+              "notes": "Für Gewerbe/Kommunen. KMU-Förderung 80%."
+            },
+            {
+              "name": "Energieaudit nach DIN EN 16247",
+              "price_type": "pa",
+              "duration": "1–4 Wochen",
+              "p_min": 2900,
+              "p_avg": 5500,
+              "p_max": 12000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "energiebezug_pro_jahr"
+              ],
+              "fundable": "BAFA Bundesförderung Energieaudit",
+              "notes": "Pflicht für Nicht-KMU > 250 MA oder > 50 Mio € Umsatz, alle 4 Jahre."
+            },
+            {
+              "name": "Energieberatung nach DIN V 18599",
+              "price_type": "pa",
+              "duration": "2–5 Wochen",
+              "p_min": 1800,
+              "p_avg": 3200,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [
+                "gebaeudetyp",
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Detaillierte Berechnungsmethode für Nichtwohngebäude."
+            },
+            {
+              "name": "Contracting-Orientierungsberatung",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 690,
+              "p_avg": 990,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": "BAFA Contracting-Beratung 80%",
+              "notes": "Vorbereitende Beratung für Energie-Contracting (Einspar-/Liefer-Contracting)."
+            }
+          ]
+        },
+        {
+          "name": "BEG / KfW Fördermittel und Fachplanung",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "BEG Wohngebäude (BEG WG) – Planung & Begleitung",
+              "price_type": "pa",
+              "duration": "3–9 Monate (projektbegleitend)",
+              "p_min": 2200,
+              "p_avg": 4500,
+              "p_max": 12000,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "effizienzhaus_stufe"
+              ],
+              "fundable": "KfW Förderzuschuss 50% (max. 5.000 € EFH, 2.000 €/WE MFH)",
+              "notes": "Komplettpaket Planung + Baubegleitung + Verwendungsnachweis. Voraussetzung: dena-Listung für WG."
+            },
+            {
+              "name": "BEG Nichtwohngebäude (BEG NWG)",
+              "price_type": "pa",
+              "duration": "4–12 Monate",
+              "p_min": 3900,
+              "p_avg": 7900,
+              "p_max": 25000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "effizienzhaus_stufe"
+              ],
+              "fundable": "KfW Förderzuschuss bis 50% (max. 20.000 €)",
+              "notes": "Voraussetzung: dena-Listung für NWG."
+            },
+            {
+              "name": "BEG Einzelmaßnahmen (BEG EM) Wohn-/Nichtwohngebäude",
+              "price_type": "fix",
+              "duration": "ca. 3–5h pro Maßnahme",
+              "p_min": 390,
+              "p_avg": 650,
+              "p_max": 1290,
+              "unit": "antrag",
+              "inputs": [
+                "massnahmen_anzahl"
+              ],
+              "fundable": "BAFA Zuschuss 15–70% je nach Maßnahme",
+              "notes": "Heizung, Hülle, Anlagentechnik. Tarif pro Maßnahme/Antrag."
+            },
+            {
+              "name": "KfW Energieeffizient Bauen & Sanieren – Wohngebäude",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 1900,
+              "p_avg": 3500,
+              "p_max": 8500,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "neubau_oder_sanierung"
+              ],
+              "fundable": "KfW Zuschuss bis 50%",
+              "notes": "Direkter KfW-Antrag, klassisch für KfW-Programme 261/461/297/298."
+            },
+            {
+              "name": "KfW Baudenkmal Wohngebäude (Effizienzhaus Denkmal)",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 2900,
+              "p_avg": 4900,
+              "p_max": 14000,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "denkmalstatus"
+              ],
+              "fundable": "KfW Förderung max. 30.000 €/WE",
+              "notes": "Sonderkonditionen für denkmalgeschützte Gebäude. WTA-Listung empfohlen."
+            },
+            {
+              "name": "KfW Energieeffizient Bauen & Sanieren – Nichtwohngebäude",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 3490,
+              "p_avg": 6500,
+              "p_max": 22000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": "KfW Förderung bis 50%",
+              "notes": "Voraussetzung: dena-Listung für NWG."
+            },
+            {
+              "name": "KfW Baudenkmal Nichtwohngebäude",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 3990,
+              "p_avg": 8900,
+              "p_max": 28000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "denkmalstatus"
+              ],
+              "fundable": "KfW Förderung bis 50%",
+              "notes": "Sonderkonditionen. WTA-Listung empfohlen."
+            },
+            {
+              "name": "KfW Klimafreundlicher Neubau (KFN) – Wohngebäude",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 1890,
+              "p_avg": 3290,
+              "p_max": 7900,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "qng_siegel_ja_nein"
+              ],
+              "fundable": "KfW Zinsvergünstigung KFN",
+              "notes": "Programm 297/298. QNG-Siegel optional, höhere Förderung."
+            },
+            {
+              "name": "KfW Klimafreundlicher Neubau (KFN) – Nichtwohngebäude",
+              "price_type": "pa",
+              "duration": "projektbegleitend",
+              "p_min": 2890,
+              "p_avg": 5900,
+              "p_max": 18000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "qng_siegel_ja_nein"
+              ],
+              "fundable": "KfW Zinsvergünstigung KFN",
+              "notes": "Voraussetzung: dena-Listung KFN."
+            },
+            {
+              "name": "DGNB-Auditor – Planung & Begleitung QNG",
+              "price_type": "pa",
+              "duration": "12–24 Monate",
+              "p_min": 4500,
+              "p_avg": 9500,
+              "p_max": 35000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "zertifizierungsstufe"
+              ],
+              "fundable": "Voraussetzung für QNG-Bonus in KFN",
+              "notes": "DGNB-Auditor-Listung Voraussetzung."
+            },
+            {
+              "name": "Individueller Sanierungsfahrplan (iSFP)",
+              "price_type": "fix",
+              "duration": "ca. 1–2 Tage",
+              "p_min": 1300,
+              "p_avg": 1700,
+              "p_max": 2500,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten"
+              ],
+              "fundable": "BAFA 80% (max. 1.300 € EFH, 1.700 € MFH)",
+              "notes": "iSFP-Bonus 5% bei nachfolgenden BEG-EM-Maßnahmen. Pflichtformat seit 2021."
+            },
+            {
+              "name": "BAFA-Antrag Heizungsanlage (Wärmepumpe, Solar, Biomasse)",
+              "price_type": "fix",
+              "duration": "ca. 3–4h",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 890,
+              "unit": "antrag",
+              "inputs": [
+                "anlagentyp"
+              ],
+              "fundable": "BAFA-Antrag selbst förderfähig in BEG EM",
+              "notes": "Bei BEG-EM-Heizung enthalten."
+            }
+          ]
+        },
+        {
+          "name": "Ingenieurleistungen",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Energiebedarfsausweis Wohngebäude (nach GEG)",
+              "price_type": "fix",
+              "duration": "ca. 2–4h",
+              "p_min": 250,
+              "p_avg": 399,
+              "p_max": 690,
+              "unit": "objekt",
+              "inputs": [
+                "wohneinheiten",
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Pflicht bei Verkauf/Vermietung. Gültig 10 Jahre."
+            },
+            {
+              "name": "Energieverbrauchsausweis Wohngebäude",
+              "price_type": "fix",
+              "duration": "ca. 30 Min.",
+              "p_min": 79,
+              "p_avg": 129,
+              "p_max": 199,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Nur bei Gebäuden mit Baujahr nach 1977 oder modernisiert. 3 Jahre Verbrauchsdaten nötig."
+            },
+            {
+              "name": "Energiebedarfsausweis Nichtwohngebäude",
+              "price_type": "fix",
+              "duration": "1–3 Tage",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "DIN V 18599-Berechnung."
+            },
+            {
+              "name": "Energieverbrauchsausweis Nichtwohngebäude",
+              "price_type": "fix",
+              "duration": "ca. 4h",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 890,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Min. 3 Jahre Verbrauchsdaten."
+            },
+            {
+              "name": "Wärmeschutznachweis nach GEG",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "neubau_oder_sanierung"
+              ],
+              "fundable": null,
+              "notes": "Pflichtnachweis bei Neubau und größeren Sanierungen."
+            },
+            {
+              "name": "Nachweis sommerlicher Wärmeschutz",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 890,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "fensterflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "DIN 4108-2 Verfahren. Pflicht bei Neubau."
+            },
+            {
+              "name": "Raumweise Heizlastberechnung (DIN EN 12831)",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 1190,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "raumanzahl"
+              ],
+              "fundable": null,
+              "notes": "Pflicht für KfW/BAFA Heizungsförderung."
+            },
+            {
+              "name": "Hydraulischer Abgleich (Verfahren B, Berechnung & Nachweis)",
+              "price_type": "fix",
+              "duration": "1 Tag",
+              "p_min": 490,
+              "p_avg": 790,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "heizkoerper_anzahl"
+              ],
+              "fundable": "BAFA-förderfähig im Rahmen BEG EM Heizung",
+              "notes": "Pflicht seit Okt. 2022 für Gasheizungen > 1000 m² (Wohnfläche)."
+            },
+            {
+              "name": "Lüftungskonzept nach DIN 1946-6",
+              "price_type": "fix",
+              "duration": "ca. 6–8h",
+              "p_min": 350,
+              "p_avg": 590,
+              "p_max": 1190,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Pflicht bei mehr als 1/3 Fensteraustausch oder Sanierung der Außenhülle."
+            },
+            {
+              "name": "Kostenkalkulation nach DIN 276",
+              "price_type": "pa",
+              "duration": "individuell",
+              "p_min": 890,
+              "p_avg": 1900,
+              "p_max": 4900,
+              "unit": "objekt",
+              "inputs": [
+                "bausumme"
+              ],
+              "fundable": null,
+              "notes": "Detaillierte Kostenermittlung nach DIN-Kostengruppen."
+            }
+          ]
+        },
+        {
+          "name": "Weitere Energie-Leistungen",
+          "display_order": 4,
+          "services": [
+            {
+              "name": "Thermografieanalyse Gebäude",
+              "price_type": "fix",
+              "duration": "Halbtag (Aufnahme) + Bericht",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Nur im Winter durchführbar (Außentemp. < 5°C, ΔT > 15°C)."
+            },
+            {
+              "name": "Heizungscheck / Heizungsoptimierung",
+              "price_type": "fix",
+              "duration": "ca. 2h",
+              "p_min": 150,
+              "p_avg": 230,
+              "p_max": 390,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": "BAFA-Heizungscheck 30% (max. 200 €)",
+              "notes": "Genormter Check nach DIN EN 15378."
+            },
+            {
+              "name": "Photovoltaik-Wirtschaftlichkeitsberechnung",
+              "price_type": "fix",
+              "duration": "ca. 2–3h",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "objekt",
+              "inputs": [
+                "dachflaeche_qm",
+                "stromverbrauch_jahr"
+              ],
+              "fundable": null,
+              "notes": "Inkl. ROI, Eigenverbrauch, Einspeisung, Speicherauslegung."
+            },
+            {
+              "name": "Energieberatung Gewerbe / Industrie",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 120,
+              "p_avg": 150,
+              "p_max": 220,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": "Teilweise BAFA-fähig",
+              "notes": "Vor-Ort, online oder kombiniert."
+            },
+            {
+              "name": "CO2-Bilanz Unternehmen",
+              "price_type": "pa",
+              "duration": "2–8 Wochen",
+              "p_min": 890,
+              "p_avg": 2900,
+              "p_max": 12000,
+              "unit": "objekt",
+              "inputs": [
+                "mitarbeiter_anzahl",
+                "umsatz_eur"
+              ],
+              "fundable": null,
+              "notes": "Nach GHG Protocol oder ISO 14064. Scope 1, 2 und teilweise 3."
+            },
+            {
+              "name": "Erstberatung Energieeffizienz",
+              "price_type": "fix",
+              "duration": "ca. 1h",
+              "p_min": 79,
+              "p_avg": 120,
+              "p_max": 190,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Kurzberatung ohne Förderzusage, oft als Einstieg."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "dena_required": true,
+        "dena_categories": [
+          "wg",
+          "nwg",
+          "ap",
+          "kfn",
+          "denkmal"
+        ],
+        "dena_programs": [
+          "bafa-ebw",
+          "bafa-ebn",
+          "beg-wg",
+          "beg-nwg",
+          "beg-em",
+          "kfw-kfn",
+          "kfw-kfg",
+          "dgnb-qng"
+        ],
+        "notes": "Ab 01.01.2027 ist die dena-Listung Pflicht für alle BAFA-Anträge. Grundqualifikation: Hochschulabschluss/Meister/Techniker + dena-Basismodul (80–160 UE)."
+      }
+    },
+    {
+      "id": "arc",
+      "name": "Architektur",
+      "icon": "📐",
+      "description": "Architektenleistungen nach HOAI (alle 9 Leistungsphasen)",
+      "color": "#1B2A3B",
+      "color_light": "#F1F5F9",
+      "requires_hoai": true,
+      "requires_kammer": "architekt",
+      "display_order": 2,
+      "service_categories": [
+        {
+          "name": "HOAI-Leistungsphasen Gebäudeplanung (§ 34) – Honorarzone III",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "LPH 1 – Grundlagenermittlung (2%)",
+              "price_type": "hoai",
+              "duration": "1–2 Wochen",
+              "p_min": 800,
+              "p_avg": 1500,
+              "p_max": 4500,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "2% der Gesamtleistung. Hier: Bausumme 200K–600K EUR."
+            },
+            {
+              "name": "LPH 2 – Vorplanung / Vorentwurf (7%)",
+              "price_type": "hoai",
+              "duration": "3–5 Wochen",
+              "p_min": 2900,
+              "p_avg": 5500,
+              "p_max": 16000,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "7% der Gesamtleistung."
+            },
+            {
+              "name": "LPH 3 – Entwurfsplanung (15%)",
+              "price_type": "hoai",
+              "duration": "6–10 Wochen",
+              "p_min": 6500,
+              "p_avg": 12000,
+              "p_max": 35000,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "15% der Gesamtleistung. Kernphase mit detaillierter Planung."
+            },
+            {
+              "name": "LPH 4 – Genehmigungsplanung / Bauantrag (3%)",
+              "price_type": "hoai",
+              "duration": "3–6 Wochen",
+              "p_min": 1300,
+              "p_avg": 2500,
+              "p_max": 7500,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "3%. Einreichung beim Bauamt."
+            },
+            {
+              "name": "LPH 5 – Ausführungsplanung (25%)",
+              "price_type": "hoai",
+              "duration": "8–14 Wochen",
+              "p_min": 10500,
+              "p_avg": 19500,
+              "p_max": 58000,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "25%. Werkplanung – größter Honoraranteil."
+            },
+            {
+              "name": "LPH 6 – Vorbereitung der Vergabe (10%)",
+              "price_type": "hoai",
+              "duration": "3–6 Wochen",
+              "p_min": 4500,
+              "p_avg": 8500,
+              "p_max": 24000,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "10%. LV-Erstellung und Massenermittlung."
+            },
+            {
+              "name": "LPH 7 – Mitwirkung bei der Vergabe (4%)",
+              "price_type": "hoai",
+              "duration": "2–4 Wochen",
+              "p_min": 1700,
+              "p_avg": 3200,
+              "p_max": 9500,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "4%. Angebotsprüfung und Vergabeempfehlung."
+            },
+            {
+              "name": "LPH 8 – Objektüberwachung (Bauleitung) (32%)",
+              "price_type": "hoai",
+              "duration": "Bauzeit (6–18 Mon.)",
+              "p_min": 13500,
+              "p_avg": 25000,
+              "p_max": 74000,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "32%. Längste Phase, parallel zur Bauausführung."
+            },
+            {
+              "name": "LPH 9 – Objektbetreuung in der Gewährleistung (2%)",
+              "price_type": "hoai",
+              "duration": "5 Jahre nach Abnahme",
+              "p_min": 800,
+              "p_avg": 1500,
+              "p_max": 4500,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur",
+                "honorarzone"
+              ],
+              "fundable": null,
+              "notes": "2%. Mängelmanagement während Gewährleistung."
+            }
+          ]
+        },
+        {
+          "name": "Pauschalangebote",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Komplette Planung Einfamilienhaus (LPH 1–9)",
+              "price_type": "pa",
+              "duration": "12–18 Monate",
+              "p_min": 35000,
+              "p_avg": 55000,
+              "p_max": 95000,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "~12–15% der Bausumme bei 350K–700K Baukosten."
+            },
+            {
+              "name": "Bauantrag-Erstellung Wohnhaus (LPH 1–4)",
+              "price_type": "pa",
+              "duration": "6–12 Wochen",
+              "p_min": 4500,
+              "p_avg": 7900,
+              "p_max": 16500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Stand-alone-Angebot ohne weitere Bauleitung."
+            },
+            {
+              "name": "Sanierungsplanung Wohngebäude",
+              "price_type": "pa",
+              "duration": "6–14 Wochen",
+              "p_min": 3900,
+              "p_avg": 7900,
+              "p_max": 22000,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "sanierungstiefe"
+              ],
+              "fundable": "Teilweise BEG-fähig (Baubegleitung)",
+              "notes": "Energetisch oder substanziell."
+            },
+            {
+              "name": "Anbau / Aufstockung Planung",
+              "price_type": "pa",
+              "duration": "4–10 Wochen",
+              "p_min": 2900,
+              "p_avg": 5900,
+              "p_max": 14000,
+              "unit": "objekt",
+              "inputs": [
+                "anbau_flaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Genehmigungsplanung inkl. Statik-Koordination."
+            },
+            {
+              "name": "Innenarchitektur-Konzept (komplette Wohnung)",
+              "price_type": "pa",
+              "duration": "4–8 Wochen",
+              "p_min": 1890,
+              "p_avg": 3900,
+              "p_max": 12000,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "raumanzahl"
+              ],
+              "fundable": null,
+              "notes": "Konzept, Möblierungsplan, Materialauswahl, Lichtkonzept."
+            },
+            {
+              "name": "3D-Visualisierung (pro Raum/Ansicht)",
+              "price_type": "fix",
+              "duration": "1–3 Tage pro View",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 990,
+              "unit": "view",
+              "inputs": [
+                "view_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Foto-realistisches Rendering. Pro Innen- oder Außenansicht."
+            }
+          ]
+        },
+        {
+          "name": "Einzelberatung",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Erstberatung Bauvorhaben",
+              "price_type": "fix",
+              "duration": "ca. 1,5h",
+              "p_min": 150,
+              "p_avg": 230,
+              "p_max": 390,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Verrechenbar bei Beauftragung."
+            },
+            {
+              "name": "Bauvoranfrage erstellen",
+              "price_type": "fix",
+              "duration": "ca. 4–8h",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "antrag",
+              "inputs": [
+                "grundstuecksgroesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Klärung der grundsätzlichen Bebaubarkeit."
+            },
+            {
+              "name": "Machbarkeitsstudie Grundstück",
+              "price_type": "fix",
+              "duration": "ca. 1–2 Tage",
+              "p_min": 690,
+              "p_avg": 1290,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [
+                "grundstuecksgroesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Bebauungsplan-Analyse, Wirtschaftlichkeit, Massenmodell."
+            },
+            {
+              "name": "Bestandsaufnahme & Aufmaß",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 85,
+              "p_avg": 110,
+              "p_max": 150,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Tagessatz typisch 700–950 € (8h)."
+            },
+            {
+              "name": "Architektenberatung allgemein (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 95,
+              "p_avg": 130,
+              "p_max": 195,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Höhere Sätze bei Spezialisten/leitenden Architekten."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "kammer_required": true,
+        "kammer_type": "architekt",
+        "bauvorlage_required": true,
+        "notes": "Eintragung Architektenkammer (bundeslandspezifisch). Bauvorlageberechtigung für eigenständige Bauantragseinreichung."
+      }
+    },
+    {
+      "id": "sta",
+      "name": "Statiker / Tragwerksplaner",
+      "icon": "🏗️",
+      "description": "Tragwerksplanung nach HOAI § 51 (Bauingenieure)",
+      "color": "#185FA5",
+      "color_light": "#E6F1FB",
+      "requires_hoai": true,
+      "requires_kammer": "ingenieur",
+      "display_order": 3,
+      "service_categories": [
+        {
+          "name": "HOAI Tragwerksplanung (§ 51) – Honorarzone III",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "LPH 1 – Grundlagenermittlung (3%)",
+              "price_type": "hoai",
+              "duration": "1 Woche",
+              "p_min": 250,
+              "p_avg": 450,
+              "p_max": 990,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "3% der TW-Honorarsumme. Klärung Aufgabenstellung."
+            },
+            {
+              "name": "LPH 2 – Vorplanung (10%)",
+              "price_type": "hoai",
+              "duration": "2–3 Wochen",
+              "p_min": 850,
+              "p_avg": 1500,
+              "p_max": 3300,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "10%. Vorbemessung, Tragwerkskonzept."
+            },
+            {
+              "name": "LPH 3 – Entwurfsplanung (15%)",
+              "price_type": "hoai",
+              "duration": "3–5 Wochen",
+              "p_min": 1250,
+              "p_avg": 2250,
+              "p_max": 4950,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "15%. Endgültiges Tragwerkskonzept."
+            },
+            {
+              "name": "LPH 4 – Genehmigungsplanung (Standsicherheit) (30%)",
+              "price_type": "hoai",
+              "duration": "4–8 Wochen",
+              "p_min": 2500,
+              "p_avg": 4500,
+              "p_max": 9900,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "30%. Vollständiger Standsicherheitsnachweis."
+            },
+            {
+              "name": "LPH 5 – Ausführungsplanung (Schal-/Bewehrungspläne) (40%)",
+              "price_type": "hoai",
+              "duration": "6–12 Wochen",
+              "p_min": 3400,
+              "p_avg": 6000,
+              "p_max": 13200,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "40%. Werkpläne. Größter Anteil."
+            },
+            {
+              "name": "LPH 6 – Vorbereitung der Vergabe (2%)",
+              "price_type": "hoai",
+              "duration": "1–2 Wochen",
+              "p_min": 150,
+              "p_avg": 300,
+              "p_max": 660,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "2%. Materialspezifikation."
+            }
+          ]
+        },
+        {
+          "name": "Pauschalangebote",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Statik Einfamilienhaus (komplett)",
+              "price_type": "pa",
+              "duration": "3–6 Wochen",
+              "p_min": 2200,
+              "p_avg": 3500,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "geschosse"
+              ],
+              "fundable": null,
+              "notes": "Übliches EFH 140–200 m². LPH 1–5 komplett."
+            },
+            {
+              "name": "Statik Anbau / Aufstockung",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 1290,
+              "p_avg": 2200,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "anbau_flaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Bestandsanschluss-Nachweis."
+            },
+            {
+              "name": "Statik Mehrfamilienhaus",
+              "price_type": "pa",
+              "duration": "6–12 Wochen",
+              "p_min": 4500,
+              "p_avg": 8500,
+              "p_max": 25000,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "wohneinheiten",
+                "geschosse"
+              ],
+              "fundable": null,
+              "notes": "Abhängig von Geschossanzahl + Stützweiten."
+            },
+            {
+              "name": "Bewehrungsplanung (Stahlbeton)",
+              "price_type": "pa",
+              "duration": "2–6 Wochen",
+              "p_min": 690,
+              "p_avg": 1900,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [
+                "bauteil_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Pro Bauteil oder Gesamtobjekt."
+            }
+          ]
+        },
+        {
+          "name": "Einzelnachweise & Prüfungen",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Standsicherheitsnachweis (Einzelposition)",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "position",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Bsp.: einzelner Balkon, Dachfenster, kleiner Anbau."
+            },
+            {
+              "name": "Statische Berechnung Wanddurchbruch",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 290,
+              "p_avg": 450,
+              "p_max": 890,
+              "unit": "position",
+              "inputs": [
+                "durchbruch_breite_m"
+              ],
+              "fundable": null,
+              "notes": "Sturzberechnung tragende Wand."
+            },
+            {
+              "name": "Statische Berechnung Decken-/Wandöffnung",
+              "price_type": "fix",
+              "duration": "ca. 6–8h",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1290,
+              "unit": "position",
+              "inputs": [
+                "oeffnung_groesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Bewehrungsplan."
+            },
+            {
+              "name": "Schadensgutachten Tragwerk",
+              "price_type": "pa",
+              "duration": "1–4 Wochen",
+              "p_min": 690,
+              "p_avg": 1900,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Begutachtung von Rissen, Setzungen, Versagen."
+            },
+            {
+              "name": "Statische Prüfung Bestandsgebäude",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 590,
+              "p_avg": 1290,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Z.B. vor Aufstockung oder Nutzungsänderung."
+            }
+          ]
+        },
+        {
+          "name": "Einzelberatung",
+          "display_order": 4,
+          "services": [
+            {
+              "name": "Statiker-Erstberatung",
+              "price_type": "fix",
+              "duration": "ca. 1h",
+              "p_min": 110,
+              "p_avg": 170,
+              "p_max": 290,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Verrechenbar bei Beauftragung."
+            },
+            {
+              "name": "Statiker-Beratung (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 95,
+              "p_avg": 130,
+              "p_max": 195,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Höhere Sätze bei Prüfingenieuren."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "kammer_required": true,
+        "kammer_type": "ingenieur",
+        "notes": "Eintragung Ingenieurkammer. Bauingenieur-Diplom/Master. Bauvorlageberechtigung Tragwerksplanung (länderspezifisch). Optional: Öffentlich bestellter Prüfingenieur für Standsicherheit."
+      }
+    },
+    {
+      "id": "bau",
+      "name": "Bauberatung / Baubegleitung",
+      "icon": "👷",
+      "description": "Unabhängige Bauberatung, Baubegleitung, Bauleitung",
+      "color": "#993C1D",
+      "color_light": "#FAECE7",
+      "display_order": 4,
+      "service_categories": [
+        {
+          "name": "Baubegleitung & Bauüberwachung",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "Baubegleitung Einfamilienhaus (gesamter Bau)",
+              "price_type": "pa",
+              "duration": "9–18 Monate",
+              "p_min": 3900,
+              "p_avg": 6500,
+              "p_max": 12500,
+              "unit": "objekt",
+              "inputs": [
+                "bausumme_eur",
+                "bauzeit_monate"
+              ],
+              "fundable": "BEG-Baubegleitung 50% (max. 5.000 €/Maßnahme)",
+              "notes": "Übliche 1,5–3% der Bausumme. Privatperson als Bauherr."
+            },
+            {
+              "name": "Baubegleitung Sanierung (komplett)",
+              "price_type": "pa",
+              "duration": "3–12 Monate",
+              "p_min": 2900,
+              "p_avg": 5500,
+              "p_max": 14000,
+              "unit": "objekt",
+              "inputs": [
+                "sanierungssumme_eur"
+              ],
+              "fundable": "BEG-Baubegleitung 50% (max. 5.000 €)",
+              "notes": "Förderfähig nur bei dena-gelisteten Energieberatern."
+            },
+            {
+              "name": "Bauüberwachung pro Baubesprechung (Vor-Ort-Termin)",
+              "price_type": "fix",
+              "duration": "2–3h inkl. Anfahrt",
+              "p_min": 230,
+              "p_avg": 350,
+              "p_max": 590,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Inkl. Bautagebuch und Mängelliste."
+            },
+            {
+              "name": "Bauleitung (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 75,
+              "p_avg": 100,
+              "p_max": 150,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Tagessatz typisch 600–950 €."
+            }
+          ]
+        },
+        {
+          "name": "Qualitätsprüfung & Abnahme",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Baufortschrittsprüfung mit Bericht",
+              "price_type": "fix",
+              "duration": "ca. 3–4h",
+              "p_min": 290,
+              "p_avg": 450,
+              "p_max": 790,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Pro Termin. Inkl. Fotodokumentation."
+            },
+            {
+              "name": "Bauabnahme Wohnhaus (mit Protokoll)",
+              "price_type": "fix",
+              "duration": "ca. 3–4h",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Abnahmeprotokoll und Mängelliste."
+            },
+            {
+              "name": "Abnahme Eigentumswohnung (Übergabe vom Bauträger)",
+              "price_type": "fix",
+              "duration": "ca. 2h",
+              "p_min": 290,
+              "p_avg": 390,
+              "p_max": 590,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Begehung mit Käufer."
+            },
+            {
+              "name": "Mängelaufnahme & Mängelbeseitigungsprüfung",
+              "price_type": "fix",
+              "duration": "ca. 2–3h",
+              "p_min": 230,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Pro Begehung."
+            }
+          ]
+        },
+        {
+          "name": "Beratung & Vertragsprüfung",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Bauvertrag prüfen (Bauträger/Generalunternehmer)",
+              "price_type": "fix",
+              "duration": "ca. 2–3h",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "vertrag",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Vorbereitend vor Notar-Termin empfohlen."
+            },
+            {
+              "name": "LV-Prüfung (Leistungsverzeichnis)",
+              "price_type": "fix",
+              "duration": "ca. 3–5h",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 1290,
+              "unit": "lv",
+              "inputs": [
+                "positionen_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Prüfung auf Plausibilität, Marktüblichkeit, Vollständigkeit."
+            },
+            {
+              "name": "Erstberatung Bauvorhaben",
+              "price_type": "fix",
+              "duration": "ca. 1,5h",
+              "p_min": 120,
+              "p_avg": 190,
+              "p_max": 290,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Verrechenbar bei Beauftragung."
+            },
+            {
+              "name": "Kostenkalkulation nach DIN 276",
+              "price_type": "fix",
+              "duration": "1–3 Tage",
+              "p_min": 590,
+              "p_avg": 1290,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "Kostengruppen 100–700."
+            },
+            {
+              "name": "Wirtschaftlichkeitsberechnung Bauprojekt",
+              "price_type": "fix",
+              "duration": "1–3 Tage",
+              "p_min": 690,
+              "p_avg": 1490,
+              "p_max": 4900,
+              "unit": "objekt",
+              "inputs": [
+                "bausumme_eur"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Rentabilität, Cashflow, Renditeprognose."
+            },
+            {
+              "name": "Bauberatung allgemein (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 85,
+              "p_avg": 110,
+              "p_max": 180,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Vor Ort, telefonisch oder online."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "notes": "Architekt, Bauingenieur, Bautechniker oder Baumeister. Berufserfahrung in Baudurchführung/Bauleitung empfohlen."
+      }
+    },
+    {
+      "id": "sac",
+      "name": "Gebäudesachverständige",
+      "icon": "🔍",
+      "description": "Gutachten, Bewertungen, Schäden, Wertermittlungen",
+      "color": "#7C3AED",
+      "color_light": "#EDE9FE",
+      "requires_zertifizierung": true,
+      "display_order": 5,
+      "service_categories": [
+        {
+          "name": "Verkehrswert & Bewertung",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "Verkehrswertgutachten Wohnimmobilie (Kurzgutachten)",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "objekttyp",
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "10–15 Seiten. Für Privatzwecke, nicht gerichtsfest."
+            },
+            {
+              "name": "Verkehrswertgutachten Wohnimmobilie (Vollgutachten)",
+              "price_type": "fix",
+              "duration": "3–6 Wochen",
+              "p_min": 1490,
+              "p_avg": 2900,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [
+                "objekttyp",
+                "wohnflaeche_qm",
+                "objektwert"
+              ],
+              "fundable": null,
+              "notes": "30–80 Seiten. Gerichtsfest, ImmoWertV-konform."
+            },
+            {
+              "name": "Verkehrswertgutachten Gewerbeimmobilie",
+              "price_type": "pa",
+              "duration": "4–10 Wochen",
+              "p_min": 2490,
+              "p_avg": 5900,
+              "p_max": 18000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "ertragswert"
+              ],
+              "fundable": null,
+              "notes": "Ertragswertverfahren. ImmoWertV-konform."
+            },
+            {
+              "name": "Marktwertindikation (Kurzgutachten ohne Vor-Ort)",
+              "price_type": "fix",
+              "duration": "ca. 2–4h",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "objekt",
+              "inputs": [
+                "objekttyp"
+              ],
+              "fundable": null,
+              "notes": "Schreibtischbewertung anhand vorhandener Unterlagen."
+            },
+            {
+              "name": "Beleihungswertgutachten",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 890,
+              "p_avg": 1900,
+              "p_max": 4900,
+              "unit": "objekt",
+              "inputs": [
+                "objektwert"
+              ],
+              "fundable": null,
+              "notes": "BelWertV-konform. Für Banken/Kreditgeber."
+            }
+          ]
+        },
+        {
+          "name": "Schadens- & Mängelgutachten",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Schimmelpilzgutachten",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 490,
+              "p_avg": 790,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "raumanzahl"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Materialproben + Laborkosten (extra)."
+            },
+            {
+              "name": "Feuchtigkeitsgutachten",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 490,
+              "p_avg": 790,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "raumanzahl"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Feuchtemessungen, Ursachenanalyse."
+            },
+            {
+              "name": "Bauschadengutachten (Risse, Setzungen, Mängel)",
+              "price_type": "pa",
+              "duration": "2–6 Wochen",
+              "p_min": 790,
+              "p_avg": 1490,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "schadensart",
+                "schadensumfang"
+              ],
+              "fundable": null,
+              "notes": "Aufwand stark abhängig von Schadensumfang."
+            },
+            {
+              "name": "Gerichtsgutachten Bauschäden",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 90,
+              "p_avg": 125,
+              "p_max": 175,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "JVEG-Sätze (öff. bestellte SV). Aktuell §10 JVEG."
+            },
+            {
+              "name": "Wasserschadensgutachten",
+              "price_type": "fix",
+              "duration": "1–3 Wochen",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "schadensumfang"
+              ],
+              "fundable": null,
+              "notes": "Für Versicherungsfälle. Versicherer übernimmt oft."
+            },
+            {
+              "name": "Beweissicherungsgutachten Nachbarschaftsstreit",
+              "price_type": "pa",
+              "duration": "2–6 Wochen",
+              "p_min": 790,
+              "p_avg": 1490,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Z.B. Risse durch Baumaßnahmen, Lärm, Erschütterungen."
+            }
+          ]
+        },
+        {
+          "name": "Erwerbs- & Abnahmebegleitung",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Hauskaufbegleitung (Begehung & Mängelbericht)",
+              "price_type": "fix",
+              "duration": "ca. 3–4h",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 990,
+              "unit": "termin",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Vor Kaufvertragsunterzeichnung empfohlen."
+            },
+            {
+              "name": "Erwerbsgutachten Bestandsimmobilie",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 690,
+              "p_avg": 1190,
+              "p_max": 2490,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "objekttyp"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Mängelaufnahme + Modernisierungspotenzial."
+            },
+            {
+              "name": "Abnahme Eigentumswohnung Neubau",
+              "price_type": "fix",
+              "duration": "ca. 2–3h",
+              "p_min": 290,
+              "p_avg": 450,
+              "p_max": 690,
+              "unit": "termin",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Begehung mit Käufer beim Bauträger."
+            },
+            {
+              "name": "Bauabnahme Einfamilienhaus",
+              "price_type": "fix",
+              "duration": "ca. 3–4h",
+              "p_min": 390,
+              "p_avg": 590,
+              "p_max": 990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Protokoll und Mängelliste."
+            },
+            {
+              "name": "Wohnflächenberechnung (Wohnflächenverordnung)",
+              "price_type": "fix",
+              "duration": "ca. 1–2h",
+              "p_min": 150,
+              "p_avg": 250,
+              "p_max": 490,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Nach WoFlV. Wichtig für Mietverträge."
+            }
+          ]
+        },
+        {
+          "name": "Spezialgutachten",
+          "display_order": 4,
+          "services": [
+            {
+              "name": "Schadstoffgutachten (Asbest, PCB, KMF)",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 590,
+              "p_avg": 1290,
+              "p_max": 3900,
+              "unit": "objekt",
+              "inputs": [
+                "raumanzahl"
+              ],
+              "fundable": null,
+              "notes": "Plus Laborkosten. TRGS 519/521-konform."
+            },
+            {
+              "name": "Lärm- & Schallschutzgutachten",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 790,
+              "p_avg": 1490,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Inkl. Vor-Ort-Messungen."
+            },
+            {
+              "name": "Sachverständigen-Beratung (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 110,
+              "p_avg": 145,
+              "p_max": 220,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "ö.b.u.v. Sachverständige meist 130–180 €."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "zertifizierung_required": true,
+        "options": [
+          "öbuv",
+          "din-iso-17024"
+        ],
+        "specialties": [
+          "bewertung",
+          "schaeden",
+          "feuchte",
+          "schadstoff",
+          "schall",
+          "brand"
+        ],
+        "notes": "Öffentliche Bestellung & Vereidigung (ö.b.u.v.) oder zertifizierter Sachverständiger nach DIN EN ISO/IEC 17024. Spezialgebiete abfragen."
+      }
+    },
+    {
+      "id": "vrm",
+      "name": "Vermesser / Geodäten",
+      "icon": "📏",
+      "description": "Vermessung, Lagepläne, ÖbVI-Leistungen für Bauanträge",
+      "color": "#059669",
+      "color_light": "#D1FAE5",
+      "requires_oebvi": true,
+      "display_order": 6,
+      "service_categories": [
+        {
+          "name": "Amtliche Vermessung (ÖbVI – nach VermGebVO Bundesland)",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "Grenzfeststellung / Grenzherstellung",
+              "price_type": "pa",
+              "duration": "4–8 Wochen",
+              "p_min": 890,
+              "p_avg": 1690,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "grenzpunkte_anzahl",
+                "grundstuecksgroesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Nach VermGebVO. Preise variieren je Bundesland."
+            },
+            {
+              "name": "Teilungsvermessung (Grundstücksteilung)",
+              "price_type": "pa",
+              "duration": "6–12 Wochen",
+              "p_min": 1290,
+              "p_avg": 2490,
+              "p_max": 6500,
+              "unit": "objekt",
+              "inputs": [
+                "teilungen_anzahl",
+                "grundstuecksgroesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Veränderungsnachweis ans Katasteramt."
+            },
+            {
+              "name": "Gebäudeeinmessung (für Liegenschaftskataster)",
+              "price_type": "fix",
+              "duration": "1–3 Wochen",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "bebaute_flaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Pflicht nach Fertigstellung. Frist meist 6 Mon."
+            },
+            {
+              "name": "Amtlicher Lageplan zum Bauantrag",
+              "price_type": "fix",
+              "duration": "2–4 Wochen",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "grundstuecksgroesse_qm"
+              ],
+              "fundable": null,
+              "notes": "Maßstab 1:500. Inkl. Höhen und Bestand."
+            },
+            {
+              "name": "Höhenfestlegung / Höhenbolzen",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Pro Höhenpunkt."
+            },
+            {
+              "name": "Grenzbescheinigung",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 220,
+              "p_avg": 350,
+              "p_max": 590,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Schriftliche Bestätigung amtlich anerkannter Grenzen."
+            }
+          ]
+        },
+        {
+          "name": "Ingenieurvermessung & Bauvermessung",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Absteckung Bauwerk (Achsabsteckung)",
+              "price_type": "fix",
+              "duration": "1 Tag",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "bebaute_flaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Schnurgerüst und Achspunkte."
+            },
+            {
+              "name": "Schnurgerüst erstellen",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 690,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Üblich vor Aushubarbeiten."
+            },
+            {
+              "name": "Bestandsaufmaß Gebäude (für Planung)",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 590,
+              "p_avg": 1290,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Innen + Außen, Pläne als CAD/PDF."
+            },
+            {
+              "name": "3D-Laserscanning Gebäude",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 1290,
+              "p_avg": 2900,
+              "p_max": 9500,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Hochpräzise Punktwolke. Für BIM und Sanierung."
+            },
+            {
+              "name": "Drohnenbefliegung / Photogrammetrie",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 690,
+              "p_avg": 1490,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "gelaendeflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "DJI/senseFly/Wingtra je nach Größe. Inkl. Orthophoto + DGM."
+            },
+            {
+              "name": "Setzungs- & Verformungsmessung",
+              "price_type": "pa",
+              "duration": "Mehrere Termine über Monate",
+              "p_min": 490,
+              "p_avg": 1190,
+              "p_max": 3900,
+              "unit": "messreihe",
+              "inputs": [
+                "messpunkte_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Z.B. nach Nachbargrundstück-Baumaßnahmen."
+            }
+          ]
+        },
+        {
+          "name": "Lagepläne & Topografie",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Topografische Geländeaufnahme",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 590,
+              "p_avg": 1190,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [
+                "gelaendeflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Bestandsbäume, Mauern, Versorgungsleitungen."
+            },
+            {
+              "name": "Höhenplan / Geländeschnitt",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 990,
+              "unit": "schnitt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Pro Schnitt."
+            },
+            {
+              "name": "Wegerechts- & Dienstbarkeitsplan",
+              "price_type": "fix",
+              "duration": "1–3 Wochen",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Für Grundbucheintrag."
+            },
+            {
+              "name": "Vermesserberatung (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 95,
+              "p_avg": 130,
+              "p_max": 195,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "ÖbVI typisch 130–170 €."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "oebvi_optional": true,
+        "notes": "Öffentlich bestellter Vermessungsingenieur (ÖbVI) für hoheitliche Aufgaben. Master/Diplom Vermessungswesen/Geodäsie/Geoinformatik."
+      }
+    },
+    {
+      "id": "tga",
+      "name": "TGA-Fachplaner",
+      "icon": "🔧",
+      "description": "Technische Gebäudeausrüstung nach HOAI § 55: Heizung, Lüftung, Sanitär, Elektro",
+      "color": "#993556",
+      "color_light": "#FBEAF0",
+      "requires_hoai": true,
+      "requires_kammer": "ingenieur",
+      "display_order": 7,
+      "service_categories": [
+        {
+          "name": "HOAI Technische Ausrüstung (§ 55) – Honorarzone II",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "LPH 1 – Grundlagenermittlung (TGA, 2%)",
+              "price_type": "hoai",
+              "duration": "1 Woche",
+              "p_min": 150,
+              "p_avg": 290,
+              "p_max": 690,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "Bezogen auf TGA-Anteil der Gesamtkosten."
+            },
+            {
+              "name": "LPH 2 – Vorplanung (TGA, 9%)",
+              "price_type": "hoai",
+              "duration": "2–3 Wochen",
+              "p_min": 690,
+              "p_avg": 1290,
+              "p_max": 3100,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "9%."
+            },
+            {
+              "name": "LPH 3 – Entwurfsplanung (TGA, 17%)",
+              "price_type": "hoai",
+              "duration": "3–6 Wochen",
+              "p_min": 1290,
+              "p_avg": 2400,
+              "p_max": 5900,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "17%."
+            },
+            {
+              "name": "LPH 4 – Genehmigungsplanung (TGA, 2%)",
+              "price_type": "hoai",
+              "duration": "1–2 Wochen",
+              "p_min": 150,
+              "p_avg": 290,
+              "p_max": 690,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "2%."
+            },
+            {
+              "name": "LPH 5 – Ausführungsplanung (TGA, 22%)",
+              "price_type": "hoai",
+              "duration": "4–10 Wochen",
+              "p_min": 1690,
+              "p_avg": 3100,
+              "p_max": 7700,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "22%. Werkpläne TGA-Gewerke."
+            },
+            {
+              "name": "LPH 6 – Vorbereitung der Vergabe (TGA, 7%)",
+              "price_type": "hoai",
+              "duration": "1–3 Wochen",
+              "p_min": 540,
+              "p_avg": 990,
+              "p_max": 2450,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "7%."
+            },
+            {
+              "name": "LPH 7 – Mitwirkung bei der Vergabe (TGA, 5%)",
+              "price_type": "hoai",
+              "duration": "1–2 Wochen",
+              "p_min": 390,
+              "p_avg": 720,
+              "p_max": 1750,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "5%."
+            },
+            {
+              "name": "LPH 8 – Objektüberwachung (TGA, 35%)",
+              "price_type": "hoai",
+              "duration": "Bauzeit",
+              "p_min": 2700,
+              "p_avg": 4900,
+              "p_max": 12200,
+              "unit": "bausumme_prozent",
+              "inputs": [
+                "bausumme_tga_eur"
+              ],
+              "fundable": null,
+              "notes": "35%. Längste Phase."
+            }
+          ]
+        },
+        {
+          "name": "Heizungs- & Lüftungsplanung",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Heizlastberechnung & Heizungsauslegung",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 590,
+              "p_avg": 990,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": "BAFA-fähig in BEG-EM",
+              "notes": "DIN EN 12831, raumweise oder gebäudebezogen."
+            },
+            {
+              "name": "Wärmepumpen-Planung & Dimensionierung",
+              "price_type": "fix",
+              "duration": "1–3 Tage",
+              "p_min": 890,
+              "p_avg": 1490,
+              "p_max": 2990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "wp_typ"
+              ],
+              "fundable": "BEG-EM-förderfähig",
+              "notes": "Sole-/Wasser-/Luft-WP. Inkl. JAZ-Berechnung."
+            },
+            {
+              "name": "Lüftungsplanung kontrollierte Wohnraumlüftung",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "anlagentyp"
+              ],
+              "fundable": "BEG-EM-förderfähig",
+              "notes": "Zentral oder dezentral, DIN 1946-6."
+            },
+            {
+              "name": "Klima-/Kälteanlagenplanung Gewerbe",
+              "price_type": "pa",
+              "duration": "2–8 Wochen",
+              "p_min": 1290,
+              "p_avg": 3500,
+              "p_max": 18000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "VRF, Splitsysteme, Kaltwassersätze."
+            },
+            {
+              "name": "Hydraulischer Abgleich (Berechnung & Planung)",
+              "price_type": "fix",
+              "duration": "1 Tag",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1290,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": "BEG-EM-förderfähig",
+              "notes": "Verfahren B mit Bauteilberechnung."
+            }
+          ]
+        },
+        {
+          "name": "Sanitär- & Elektroplanung",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Sanitärplanung Einfamilienhaus",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 690,
+              "p_avg": 1290,
+              "p_max": 2900,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "bad_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Trink- und Abwasser, DIN 1986-100 / DIN 1988."
+            },
+            {
+              "name": "Elektroplanung Wohngebäude (Stromkreise, Verteilung)",
+              "price_type": "pa",
+              "duration": "1–4 Wochen",
+              "p_min": 790,
+              "p_avg": 1490,
+              "p_max": 3500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Verteilerplan, KNX/Smart-Home optional."
+            },
+            {
+              "name": "Photovoltaikplanung & Auslegung",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "dachflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Verschattungsanalyse, Modulauslegung, WR-Wahl."
+            },
+            {
+              "name": "E-Mobilität-/Wallbox-Konzept",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 250,
+              "p_avg": 390,
+              "p_max": 790,
+              "unit": "objekt",
+              "inputs": [
+                "wallbox_anzahl"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Lastmanagement, Netzanmeldung."
+            }
+          ]
+        },
+        {
+          "name": "Einzelberatung",
+          "display_order": 4,
+          "services": [
+            {
+              "name": "TGA-Erstberatung",
+              "price_type": "fix",
+              "duration": "ca. 1,5h",
+              "p_min": 130,
+              "p_avg": 190,
+              "p_max": 350,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Verrechenbar bei Beauftragung."
+            },
+            {
+              "name": "TGA-Beratung (Stundensatz)",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 95,
+              "p_avg": 135,
+              "p_max": 195,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Höhere Sätze für leitende Fachplaner."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "kammer_required": true,
+        "kammer_type": "ingenieur",
+        "fachbereiche": [
+          "heizung",
+          "lueftung",
+          "sanitaer",
+          "elektro",
+          "msr",
+          "aufzuege"
+        ],
+        "notes": "Ingenieurkammer-Eintragung. Bauingenieur/Versorgungstechniker/Gebäudeenergieberater. Fachbereiche abfragen."
+      }
+    },
+    {
+      "id": "bps",
+      "name": "Bauphysik & Spezialberatung",
+      "icon": "🔊",
+      "description": "Schallschutz, Brandschutz, Schadstoffe, Bauphysik",
+      "color": "#0E7490",
+      "color_light": "#CFFAFE",
+      "requires_kammer": "ingenieur",
+      "display_order": 8,
+      "service_categories": [
+        {
+          "name": "Schallschutznachweise",
+          "display_order": 1,
+          "services": [
+            {
+              "name": "Schallschutznachweis Wohngebäude (DIN 4109)",
+              "price_type": "fix",
+              "duration": "1–2 Tage",
+              "p_min": 390,
+              "p_avg": 690,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "wohneinheiten"
+              ],
+              "fundable": null,
+              "notes": "Pflicht bei Neubau und Erweiterung."
+            },
+            {
+              "name": "Schallschutznachweis Nichtwohngebäude",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 790,
+              "p_avg": 1490,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Komplexer als bei Wohngebäuden."
+            },
+            {
+              "name": "Raumakustik-Konzept (Gewerbe)",
+              "price_type": "pa",
+              "duration": "1–3 Wochen",
+              "p_min": 590,
+              "p_avg": 1290,
+              "p_max": 3900,
+              "unit": "objekt",
+              "inputs": [
+                "raumvolumen_m3"
+              ],
+              "fundable": null,
+              "notes": "Z.B. Büro, Kita, Praxis."
+            },
+            {
+              "name": "Bauakustische Messung vor Ort",
+              "price_type": "fix",
+              "duration": "Halbtag",
+              "p_min": 490,
+              "p_avg": 790,
+              "p_max": 1490,
+              "unit": "termin",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Luft- und Trittschall, DIN EN ISO 16283."
+            }
+          ]
+        },
+        {
+          "name": "Brandschutz",
+          "display_order": 2,
+          "services": [
+            {
+              "name": "Brandschutzkonzept Wohngebäude",
+              "price_type": "pa",
+              "duration": "2–4 Wochen",
+              "p_min": 890,
+              "p_avg": 1690,
+              "p_max": 4500,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "geschosse"
+              ],
+              "fundable": null,
+              "notes": "Pflicht ab Gebäudeklasse 4 (Hochhaus)."
+            },
+            {
+              "name": "Brandschutzkonzept Sonderbau / Gewerbe",
+              "price_type": "pa",
+              "duration": "3–8 Wochen",
+              "p_min": 2290,
+              "p_avg": 4500,
+              "p_max": 14000,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm",
+                "nutzungstyp"
+              ],
+              "fundable": null,
+              "notes": "Versammlungsstätten, Schulen, Kitas, Krankenhäuser."
+            },
+            {
+              "name": "Brandschutznachweis für Bauantrag",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 590,
+              "p_avg": 990,
+              "p_max": 2290,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Einreichungsfähiger Nachweis."
+            },
+            {
+              "name": "Flucht- & Rettungswegplan",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 290,
+              "p_avg": 590,
+              "p_max": 1490,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "DIN ISO 23601. Pro Geschoss."
+            }
+          ]
+        },
+        {
+          "name": "Schadstoff- & Umweltgutachten",
+          "display_order": 3,
+          "services": [
+            {
+              "name": "Asbest-Erkundung (vor Sanierung/Abbruch)",
+              "price_type": "fix",
+              "duration": "1–2 Wochen",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm",
+                "probenanzahl"
+              ],
+              "fundable": null,
+              "notes": "Plus Laborkosten 80–120 €/Probe."
+            },
+            {
+              "name": "PCB-/KMF-Erkundung",
+              "price_type": "fix",
+              "duration": "1–3 Wochen",
+              "p_min": 490,
+              "p_avg": 890,
+              "p_max": 1990,
+              "unit": "objekt",
+              "inputs": [
+                "probenanzahl"
+              ],
+              "fundable": null,
+              "notes": "Häufig in Industriegebäuden der 60er/70er."
+            },
+            {
+              "name": "Schadstoffkataster Gebäudekomplex",
+              "price_type": "pa",
+              "duration": "3–8 Wochen",
+              "p_min": 1290,
+              "p_avg": 2900,
+              "p_max": 9500,
+              "unit": "objekt",
+              "inputs": [
+                "nettogrundflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Vollständige Erfassung aller Schadstoffe."
+            },
+            {
+              "name": "Rückbau- & Entsorgungskonzept",
+              "price_type": "pa",
+              "duration": "2–6 Wochen",
+              "p_min": 890,
+              "p_avg": 1990,
+              "p_max": 5900,
+              "unit": "objekt",
+              "inputs": [
+                "bvt_volumen_m3"
+              ],
+              "fundable": null,
+              "notes": "Inkl. Massenermittlung + Verwertungsweg."
+            }
+          ]
+        },
+        {
+          "name": "Bauphysik",
+          "display_order": 4,
+          "services": [
+            {
+              "name": "Bauphysikalisches Gutachten",
+              "price_type": "pa",
+              "duration": "2–6 Wochen",
+              "p_min": 790,
+              "p_avg": 1690,
+              "p_max": 4900,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Wärme + Feuchte + Schall + Brand kombiniert."
+            },
+            {
+              "name": "Feuchteschutznachweis nach DIN 4108",
+              "price_type": "fix",
+              "duration": "ca. 4–6h",
+              "p_min": 290,
+              "p_avg": 490,
+              "p_max": 890,
+              "unit": "objekt",
+              "inputs": [
+                "wohnflaeche_qm"
+              ],
+              "fundable": null,
+              "notes": "Pflichtnachweis bei Neubau und Sanierung."
+            },
+            {
+              "name": "Beratung Bauphysik allgemein",
+              "price_type": "hr",
+              "duration": "pro Stunde",
+              "p_min": 100,
+              "p_avg": 140,
+              "p_max": 195,
+              "unit": "stunde",
+              "inputs": [],
+              "fundable": null,
+              "notes": "Vor-Ort, telefonisch oder per Video."
+            }
+          ]
+        }
+      ],
+      "qualifications": {
+        "kammer_required": true,
+        "kammer_type": "ingenieur",
+        "specialties": [
+          "schallschutz",
+          "brandschutz",
+          "schadstoffe",
+          "bauphysik"
+        ],
+        "notes": "Bauingenieur mit Vertiefung. Brandschutzsachverständiger: Ingenieurkammer + Sachkundenachweis. Schadstoffsachverständiger: TRGS 519/521."
+      }
+    }
+  ]
+}
