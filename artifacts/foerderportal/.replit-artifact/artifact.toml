@@ -1,0 +1,62 @@
+kind = "web"
+previewPath = "/"
+title = "Förderschiene – Gebäudereport & Förderung"
+version = "1.0.0"
+id = "artifacts/foerderportal"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21098
+
+[services.development]
+run = "pnpm --filter @workspace/foerderportal run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/foerderportal", "run", "build" ]
+publicDir = "artifacts/foerderportal/dist/public"
+serve = "static"
+
+# Static directory pages must be rewritten to their actual files before the
+# SPA catch-all rule. The static server otherwise treats /impressum/ and
+# similar folder URLs as app routes.
+[[services.production.rewrites]]
+from = "/impressum/"
+to = "/impressum/index.html"
+
+[[services.production.rewrites]]
+from = "/datenschutz/"
+to = "/datenschutz/index.html"
+
+[[services.production.rewrites]]
+from = "/agb/"
+to = "/agb/index.html"
+
+[[services.production.rewrites]]
+from = "/ratgeber/"
+to = "/ratgeber/index.html"
+
+[[services.production.rewrites]]
+from = "/ratgeber/kfw-458-heizungsfoerderung/"
+to = "/ratgeber/kfw-458-heizungsfoerderung/index.html"
+
+[[services.production.rewrites]]
+from = "/ratgeber/energieausweis-pflicht/"
+to = "/ratgeber/energieausweis-pflicht/index.html"
+
+[[services.production.rewrites]]
+from = "/ratgeber/beg-foerderung/"
+to = "/ratgeber/beg-foerderung/index.html"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21098"
+BASE_PATH = "/"
